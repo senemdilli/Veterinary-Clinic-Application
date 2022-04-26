@@ -14,7 +14,6 @@ public class Main extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/TableList.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
-            stage.setTitle("Tierklinik System");
 
             Image icon = new Image("pet.png");
             stage.getIcons().add(icon);
@@ -24,6 +23,7 @@ public class Main extends Application {
 
             stage.setScene(scene);
             stage.show();
+
         } catch(Exception e) {
             e.printStackTrace();
         }

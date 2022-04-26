@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
+    // Deneme Versiyonu
     @FXML
     private ListView<String> myListView;
 
