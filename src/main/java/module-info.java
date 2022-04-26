@@ -13,4 +13,5 @@ module com.example.demo {
 
     opens tierklinik to javafx.fxml;
     exports tierklinik;
+    exports Classes;
 }

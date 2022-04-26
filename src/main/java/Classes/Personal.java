@@ -2,16 +2,15 @@ package Classes;
 
 class Personal extends Person {
 
-    private String personalnummer;
+    private int personalnummer;
     private double gehalt;
 
-    public Personal(String name, String nachname, String personalnummer) {
+    public Personal(String name, String nachname) {
         super(name, nachname);
-        this.personalnummer = personalnummer;
     }
 
     // set
-    public void setPersonalnummer(String Personalnummer) {
+    public void setPersonalnummer(int personalnummer) {
         this.personalnummer = personalnummer;
     }
 
@@ -24,7 +23,7 @@ class Personal extends Person {
         return gehalt;
     }
 
-    public String getPersonalnummer() {
+    public int getPersonalnummer() {
         return personalnummer;
     }
 }

@@ -2,18 +2,17 @@ package Classes;
 
 class Tierarzt extends Person {
 
-    private String personalnummer;
+    private int personalnummer;
     public String fachgebiet;
     public String operationen;
     private double gehalt;
 
-    public Tierarzt(String name, String nachname, String personalnummer) {
+    public Tierarzt(String name, String nachname) {
         super(name, nachname);
-        this.personalnummer = personalnummer;
     }
 
     //set
-    public void setPersonalnummer(String personalnummer) {
+    public void setPersonalnummer(int personalnummer) {
         this.personalnummer = personalnummer;
     }
 
@@ -30,7 +29,7 @@ class Tierarzt extends Person {
     }
 
     //get
-    public String getPersonalnummer() {
+    public int getPersonalnummer() {
         return personalnummer;
     }
 
