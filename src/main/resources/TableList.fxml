@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tierklinik.TableController">
+   <children>
+      <TableView fx:id="table" prefHeight="400.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="col_name" prefWidth="301.0" text="name" />
+          <TableColumn fx:id="col_nachname" prefWidth="298.0" text="nachname" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
