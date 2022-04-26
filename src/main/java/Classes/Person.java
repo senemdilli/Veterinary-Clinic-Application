@@ -40,7 +40,6 @@ public class Person {
     }
 
     // get
-
     public int getId() {
         return id;
     }
