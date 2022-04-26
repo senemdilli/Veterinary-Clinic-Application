@@ -14,6 +14,14 @@ public class Person {
         this.nachname = nachname;
     }
 
+    public Person(String name, String nachname, int telefonnummer, String email, String adresse) {
+        this.name = name;
+        this.nachname = nachname;
+        this.adresse = adresse;
+        this.telefonnummer = telefonnummer;
+        this.email = email;
+    }
+
     // set
     public void setId(int id) {
         this.id = id;

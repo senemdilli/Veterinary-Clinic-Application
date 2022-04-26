@@ -18,8 +18,8 @@ public class Main extends Application {
             Image icon = new Image("pet.png");
             stage.getIcons().add(icon);
             stage.setTitle("Tierklinik System");
-            stage.setWidth(1920);
-            stage.setHeight(1080);
+            stage.setWidth(1366);
+            stage.setHeight(768);
 
             stage.setScene(scene);
             stage.show();

@@ -24,6 +24,12 @@ public class TableController implements Initializable {
     private TableColumn<Person,String> col_name;
     @FXML
     private TableColumn<Person,String> col_nachname;
+    @FXML
+    private TableColumn<Person,Integer> col_telnum;
+    @FXML
+    private TableColumn<Person,String> col_mail;
+    @FXML
+    private TableColumn<Person,String> col_adresse;
 
     ObservableList<Person> oblist = FXCollections.observableArrayList();
 
@@ -35,7 +41,7 @@ public class TableController implements Initializable {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM person");
 
             while (rs.next()) {
-                oblist.add(new Person(rs.getString("name"), rs.getString("nachname")));
+                oblist.add(new Person(rs.getString("name"), rs.getString("nachname"), rs.getInt("telefonnummer"), rs.getString("email"), rs.getString("adresse")));
             }
         } catch (SQLException e) {
             Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
@@ -43,6 +49,9 @@ public class TableController implements Initializable {
 
         col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         col_nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
+        col_telnum.setCellValueFactory(new PropertyValueFactory<>("telefonnummer"));
+        col_mail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        col_adresse.setCellValueFactory(new PropertyValueFactory<>("adresse"));
 
         table.setItems(oblist);
     }

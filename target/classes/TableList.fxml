@@ -6,18 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="469.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="tierklinik.TableController">
+<AnchorPane prefHeight="982.0" prefWidth="1512.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tierklinik.TableController">
    <children>
-      <TableView fx:id="table" layoutY="47.0" prefHeight="422.0" prefWidth="600.0">
+      <TableView fx:id="table" layoutX="199.0" layoutY="130.0" prefHeight="736.0" prefWidth="1130.0" AnchorPane.bottomAnchor="122.0" AnchorPane.leftAnchor="199.0" AnchorPane.rightAnchor="179.0" AnchorPane.topAnchor="124.0">
         <columns>
-          <TableColumn fx:id="col_name" prefWidth="301.0" text="name" />
-          <TableColumn fx:id="col_nachname" prefWidth="298.0" text="nachname" />
+          <TableColumn fx:id="col_name" prefWidth="226.0" text="name" />
+          <TableColumn fx:id="col_nachname" prefWidth="226.0" text="nachname" />
+            <TableColumn fx:id="col_telnum" prefWidth="226.0" text="telefonnummer" />
+            <TableColumn fx:id="col_mail" prefWidth="226.0" text="e-mail" />
+            <TableColumn fx:id="col_adresse" prefWidth="226.0" text="adresse" />
         </columns>
       </TableView>
-      <Label fx:id="table_label" alignment="CENTER" contentDisplay="CENTER" layoutY="11.0" prefHeight="29.0" prefWidth="600.0" text="Person">
+      <Label fx:id="table_label" alignment="CENTER" contentDisplay="CENTER" layoutX="-2.0" layoutY="41.0" prefHeight="44.0" prefWidth="1512.0" text="Person">
          <font>
-            <Font size="24.0" />
+            <Font size="36.0" />
          </font>
       </Label>
    </children>
