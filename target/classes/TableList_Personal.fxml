@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tierklinik.TableControllerPersonal">
+    <children>
+        <TableView fx:id="table" layoutY="149.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="204.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="84.0">
+            <columns>
+                <TableColumn fx:id="col_name" prefWidth="120.0" text="name" />
+                <TableColumn fx:id="col_nachname" prefWidth="120.0" text="nachname" />
+                <TableColumn fx:id="col_telnum" prefWidth="120.0" text="telefonnummer" />
+                <TableColumn fx:id="col_mail" prefWidth="120.0" text="e-mail" />
+                <TableColumn fx:id="col_adresse" prefWidth="120.0" text="adresse" />
+                <TableColumn fx:id="col_personalnummer" prefWidth="120.0" text="personalnummer" />
+                <TableColumn fx:id="col_arbeit" prefWidth="120.0" text="arbeit" />
+                <TableColumn fx:id="col_gehalt" prefWidth="120.0" text="gehalt" />
+            </columns>
+        </TableView>
+        <Label fx:id="table_label" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="3.0" layoutY="-2.0" prefHeight="44.0" prefWidth="1366.0" text="Personal">
+            <font>
+                <Font name="Raleway Light" size="36.0" />
+            </font>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+        </Label>
+      <HBox fx:id="edit" layoutX="1162.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fx:id="refreshIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#refreshTable">
+               <image>
+                  <Image url="@../../../../../Desktop/uni/INF202%20-%20SE/icons/refresh.png" />
+               </image>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fx:id="addIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#getAddView">
+               <image>
+                  <Image url="@../../../../../Desktop/uni/INF202%20-%20SE/icons/person-add.png" />
+               </image>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fx:id="deleteIcon" fitHeight="40.0" fitWidth="40.0">
+               <image>
+                  <Image url="@../../../../../Desktop/uni/INF202%20-%20SE/icons/person-remove.png" />
+               </image>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="10.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </ImageView>
+         </children>
+      </HBox>
+    </children>
+
+</AnchorPane>

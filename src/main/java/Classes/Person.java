@@ -2,11 +2,11 @@ package Classes;
 
 public class Person {
 
-    private int id;
+    private Integer id;
     private String name;
     private String nachname;
     private String adresse;
-    private int telefonnummer;
+    private Integer telefonnummer;
     private String email;
 
     public Person(String name, String nachname) {
@@ -14,7 +14,8 @@ public class Person {
         this.nachname = nachname;
     }
 
-    public Person(String name, String nachname, int telefonnummer, String email, String adresse) {
+    public Person(Integer id, String name, String nachname, Integer telefonnummer, String email, String adresse) {
+        this.id = id;
         this.name = name;
         this.nachname = nachname;
         this.adresse = adresse;
@@ -23,7 +24,7 @@ public class Person {
     }
 
     // set
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -43,16 +44,16 @@ public class Person {
         this.name = name;
     }
 
-    public void setTelefonnummer(int telefonnummer) {
+    public void setTelefonnummer(Integer telefonnummer) {
         this.telefonnummer = telefonnummer;
     }
 
     // get
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public int getTelefonnummer() {
+    public Integer getTelefonnummer() {
         return telefonnummer;
     }
 

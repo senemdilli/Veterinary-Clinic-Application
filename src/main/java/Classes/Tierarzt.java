@@ -1,37 +1,37 @@
 package Classes;
 
-class Tierarzt extends Person {
+public class Tierarzt extends Personal {
 
-    private int personalnummer;
+    //private int personalnummer;
     public String fachgebiet;
     public String operationen;
-    private double gehalt;
+    //private double gehalt;
 
     public Tierarzt(String name, String nachname) {
         super(name, nachname);
     }
 
     //set
-    public void setPersonalnummer(int personalnummer) {
+    /*public void setPersonalnummer(int personalnummer) {
         this.personalnummer = personalnummer;
-    }
+    }*/
 
     public void setOperationen(String operationen) {
         this.operationen = operationen;
     }
 
-    public void setGehalt(double gehalt) {
+    /*public void setGehalt(double gehalt) {
         this.gehalt = gehalt;
-    }
+    } */
 
     public void setFachgebiet(String fachgebiet) {
         this.fachgebiet = fachgebiet;
     }
 
     //get
-    public int getPersonalnummer() {
+    /*public int getPersonalnummer() {
         return personalnummer;
-    }
+    }*/
 
     public String getOperationen() {
         return operationen;
@@ -41,8 +41,8 @@ class Tierarzt extends Person {
         return fachgebiet;
     }
 
-    public double getGehalt() {
+    /*public double getGehalt() {
         return gehalt;
-    }
+    }*/
 
 }

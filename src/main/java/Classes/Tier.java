@@ -1,6 +1,6 @@
 package Classes;
 
-class Tier extends Person {
+public class Tier extends Person {
 
     private String tier_id;
     private double gewicht;

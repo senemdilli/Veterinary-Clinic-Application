@@ -21,6 +21,8 @@ public class TableController implements Initializable {
     @FXML
     private TableView<Person> table;
     @FXML
+    private TableColumn<Person,Integer> col_id;
+    @FXML
     private TableColumn<Person,String> col_name;
     @FXML
     private TableColumn<Person,String> col_nachname;
@@ -41,12 +43,13 @@ public class TableController implements Initializable {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM person");
 
             while (rs.next()) {
-                oblist.add(new Person(rs.getString("name"), rs.getString("nachname"), rs.getInt("telefonnummer"), rs.getString("email"), rs.getString("adresse")));
+                oblist.add(new Person(rs.getInt("id"), rs.getString("name"), rs.getString("nachname"), rs.getInt("telefonnummer"), rs.getString("email"), rs.getString("adresse")));
             }
         } catch (SQLException e) {
             Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
         }
 
+        col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         col_nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
         col_telnum.setCellValueFactory(new PropertyValueFactory<>("telefonnummer"));
