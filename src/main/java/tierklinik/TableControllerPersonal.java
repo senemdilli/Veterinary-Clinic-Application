@@ -60,7 +60,7 @@ public class TableControllerPersonal implements Initializable {
     @FXML
     private void getAddView() {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("/addPersonal.fxml"));
+            Parent parent = FXMLLoader.load(Main.class.getResource("/addPersonal.fxml"));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -76,7 +76,7 @@ public class TableControllerPersonal implements Initializable {
     private void refreshTable() {
         try {
             oblist.clear();
-            query = "SELECT * FROM personal, person WHERE person.id = personal.id";
+            query = "SELECT * FROM person INNER JOIN personal WHERE person.id = personal.id";
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
@@ -158,11 +158,12 @@ public class TableControllerPersonal implements Initializable {
                             public void handle(javafx.scene.input.MouseEvent mouseEvent) {
                                 try {
                                     personal = table.getSelectionModel().getSelectedItem();
-                                    query = "DELETE * FROM 'personal' WHERE personalnummer = " + personal.getPersonalnummer();
+                                    query = "DELETE * FROM 'personal' WHERE id = " + personal.getId();
                                     connection = FullDB.connect();
                                     preparedStatement = connection.prepareStatement(query);
                                     preparedStatement.execute();
                                     refreshTable();
+
                                 } catch (SQLException e) {
                                     Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
                                 }

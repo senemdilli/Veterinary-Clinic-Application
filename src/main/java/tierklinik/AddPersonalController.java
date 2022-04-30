@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import org.w3c.dom.events.MouseEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -37,12 +37,13 @@ public class AddPersonalController implements Initializable {
     private TextField addGehalt;
 
     String query = null;
+    String query2 = null;
     Connection connection = null;
     ResultSet resultSet = null;
     PreparedStatement preparedStatement;
     Personal personal = null;
     private boolean update;
-    int personalnummer;
+    int id;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,25 +58,26 @@ public class AddPersonalController implements Initializable {
             e.printStackTrace();
         }
 
-        Integer id = Integer.valueOf(addId.getText());
+        int id = Integer.parseInt(addId.getText());
         String name = addName.getText();
         String nachname = addNachname.getText();
-        Integer telefonnummer = Integer.valueOf(addTel.getText());
+        int telefonnummer = Integer.parseInt(addTel.getText());
         String email = addEmail.getText();
-        String adress = addAdresse.getText();
+        String adresse = addAdresse.getText();
         String arbeit = addArbeit.getText();
-        Integer personalnummer = Integer.valueOf(addPnummer.getText());
-        Double gehalt = Double.valueOf(addGehalt.getText());
+        int personalnummer = Integer.parseInt(addPnummer.getText());
+        double gehalt = Double.parseDouble(addGehalt.getText());
 
-        if(name.isEmpty() || nachname.isEmpty() || telefonnummer.toString().isEmpty() || email.isEmpty() || adress.isEmpty() ||
-        arbeit.isEmpty() || personalnummer.toString().isEmpty()|| gehalt.toString().isEmpty()) {
+        if(name.isEmpty() || nachname.isEmpty() || Integer.toString(telefonnummer).isEmpty() || email.isEmpty() || adresse.isEmpty() ||
+        arbeit.isEmpty() || Integer.toString(personalnummer).isEmpty()|| Double.toString(gehalt).isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Bitte füllen Sie alle Daten aus.");
             alert.showAndWait();
         } else {
             getQuery();
-            insert();
+            insertPerson();
+            //insertPersonal();
             clean();
         }
     }
@@ -83,34 +85,59 @@ public class AddPersonalController implements Initializable {
     private void getQuery() {
 
         if (!update) {
-            query = "INSERT INTO 'personal' ('name', 'nachname', 'telefonnummer', 'email', 'adress', 'arbeit', 'personalnummer', 'gehalt') " +
-                    "VALUES(?,?,?,?,?,?,?,?)";
+            //query = "INSERT INTO 'personal' ('id', 'name', 'nachname', 'telefonnummer', 'email', 'adresse', 'arbeit', 'personalnummer', 'gehalt') " +
+            //        "VALUES(?,?,?,?,?,?,?,?)";
+            query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?)";
+            query2 = "INSERT INTO 'personal ('id', 'arbeit', 'personalnummer', 'gehalt') VALUES(?,?,?)";
         } else {
-            query = "UPDATE 'personal' SET"
+            /* query = "UPDATE 'personal' SET"
+                    + "'id' = ?,"
                     + "'name' =?,"
                     + "'nachname' =?,"
                     + "'telefonnummer' =?,"
                     + "'email' =?,"
-                    + "'adress' =?,"
+                    + "'adresse' =?,"
                     + "'arbeit' =?,"
                     + "'personalnummer' =?,"
-                    + "'gehalt' =? WHERE personalnummer = '" + personalnummer + "'";
+                    + "'gehalt' =? WHERE id = '" + id + "'"; */
+            query = "UPDATE 'person' SET"
+                    + "'name' =?,"
+                    + "'nachname' =?,"
+                    + "'id' = ?,"
+                    + "'adresse' =?,"
+                    + "'telefonnummer' =?,"
+                    + "'email' =? WHERE id ='" + id + "'";
         }
 
     }
 
-    private void insert() {
+    private void insertPerson() {
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, addId.getText());
-            preparedStatement.setString(2, addName.getText());
-            preparedStatement.setString(3, addNachname.getText());
-            preparedStatement.setString(4, addTel.getText());
-            preparedStatement.setString(5, addEmail.getText());
-            preparedStatement.setString(6, addAdresse.getText());
-            preparedStatement.setString(7, addArbeit.getText());
-            preparedStatement.setString(8, addPnummer.getText());
-            preparedStatement.setString(9, addGehalt.getText());
+            preparedStatement.setString(3, String.valueOf(addId.getText()));
+            preparedStatement.setString(1, addName.getText().toString());
+            preparedStatement.setString(2, addNachname.getText().toString());
+            preparedStatement.setString(5, String.valueOf(addTel.getText()));
+            preparedStatement.setString(6, addEmail.getText().toString());
+            preparedStatement.setString(4, addAdresse.getText().toString());
+            //preparedStatement.setString(7, addArbeit.getText());
+            //preparedStatement.setString(8, addPnummer.getText());
+            //preparedStatement.setString(9, addGehalt.getText());
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void insertPersonal() {
+
+        try {
+            preparedStatement = connection.prepareStatement(query2);
+            preparedStatement.setString(2, addArbeit.getText());
+            preparedStatement.setString(3, addPnummer.getText());
+            preparedStatement.setString(4, addGehalt.getText());
             preparedStatement.execute();
 
         } catch (SQLException e) {

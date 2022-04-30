@@ -2,8 +2,8 @@ package Classes;
 
 public class Personal extends Person {
 
-    private int personalnummer;
-    private double gehalt;
+    private Integer personalnummer;
+    private Double gehalt;
     private String arbeit;
 
     public Personal(String name, String nachname) {
