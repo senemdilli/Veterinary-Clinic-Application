@@ -20,6 +20,26 @@
          </font>
       </Label>
       <HBox prefHeight="50.0" prefWidth="200.0" />
+      <HBox fx:id="addGehalt1" prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Text fx:id="addGehalt_Label1" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal ID:">
+               <HBox.margin>
+                  <Insets left="35.0" top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Raleway Light" size="18.0" />
+               </font>
+            </Text>
+            <TextField fx:id="addId" prefHeight="20.0" prefWidth="400.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="70.0" top="10.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
       <HBox prefHeight="50.0" prefWidth="200.0">
          <children>
             <Text fx:id="addName_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">

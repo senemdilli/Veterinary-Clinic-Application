@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Main extends Application {
     @Override
@@ -15,7 +16,7 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/TableList_Personal.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
 
-            Image icon = new Image("png/pet.png");
+            Image icon = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("/png/pet.png")));
             stage.getIcons().add(icon);
             stage.setTitle("Tierklinik System");
             stage.setWidth(1366);

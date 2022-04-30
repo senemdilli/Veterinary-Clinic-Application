@@ -58,7 +58,7 @@ public class TableControllerPersonal implements Initializable {
     ObservableList<Personal> oblist = FXCollections.observableArrayList();
 
     @FXML
-    private void getAddView(MouseEvent event) {
+    private void getAddView() {
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("/addPersonal.fxml"));
             Scene scene = new Scene(parent);
@@ -76,7 +76,7 @@ public class TableControllerPersonal implements Initializable {
     private void refreshTable() {
         try {
             oblist.clear();
-            query = "SELECT * FROM 'personal' ";
+            query = "SELECT * FROM personal, person WHERE person.id = personal.id";
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 

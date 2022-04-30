@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 public class AddPersonalController implements Initializable {
 
     @FXML
+    private TextField addId;
+    @FXML
     private TextField addName;
     @FXML
     private TextField addNachname;
@@ -55,7 +57,7 @@ public class AddPersonalController implements Initializable {
             e.printStackTrace();
         }
 
-        //int id = addId.
+        Integer id = Integer.valueOf(addId.getText());
         String name = addName.getText();
         String nachname = addNachname.getText();
         Integer telefonnummer = Integer.valueOf(addTel.getText());
@@ -100,14 +102,15 @@ public class AddPersonalController implements Initializable {
     private void insert() {
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, addName.getText());
-            preparedStatement.setString(2, addNachname.getText());
-            preparedStatement.setString(3, addTel.getText());
-            preparedStatement.setString(4, addEmail.getText());
-            preparedStatement.setString(5, addAdresse.getText());
-            preparedStatement.setString(6, addArbeit.getText());
-            preparedStatement.setString(7, addPnummer.getText());
-            preparedStatement.setString(8, addGehalt.getText());
+            preparedStatement.setString(1, addId.getText());
+            preparedStatement.setString(2, addName.getText());
+            preparedStatement.setString(3, addNachname.getText());
+            preparedStatement.setString(4, addTel.getText());
+            preparedStatement.setString(5, addEmail.getText());
+            preparedStatement.setString(6, addAdresse.getText());
+            preparedStatement.setString(7, addArbeit.getText());
+            preparedStatement.setString(8, addPnummer.getText());
+            preparedStatement.setString(9, addGehalt.getText());
             preparedStatement.execute();
 
         } catch (SQLException e) {
@@ -118,6 +121,7 @@ public class AddPersonalController implements Initializable {
 
     @FXML
     private void clean() {
+        addId.setText(null);
         addName.setText(null);
         addNachname.setText(null);
         addAdresse.setText(null);
@@ -129,7 +133,7 @@ public class AddPersonalController implements Initializable {
     }
 
     void setTextField(int id, String name, String nachname, Integer telefonnummer, String email, String adresse, String arbeit, Integer personalnummer, Double gehalt) {
-        //addId.
+        addId.setText(String.valueOf(id));
         addName.setText(name);
         addNachname.setText(nachname);
         addAdresse.setText(adresse);
