@@ -77,7 +77,7 @@ public class AddPersonalController implements Initializable {
         } else {
             getQuery();
             insertPerson();
-            //insertPersonal();
+            insertPersonal();
             clean();
         }
     }
@@ -85,21 +85,9 @@ public class AddPersonalController implements Initializable {
     private void getQuery() {
 
         if (!update) {
-            //query = "INSERT INTO 'personal' ('id', 'name', 'nachname', 'telefonnummer', 'email', 'adresse', 'arbeit', 'personalnummer', 'gehalt') " +
-            //        "VALUES(?,?,?,?,?,?,?,?)";
-            query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?)";
-            query2 = "INSERT INTO 'personal ('id', 'arbeit', 'personalnummer', 'gehalt') VALUES(?,?,?)";
+            query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?,?)";
+            query2 = "INSERT INTO personal ( id, personalnummer, gehalt, 'arbeit') VALUES(?,?,?,?)";
         } else {
-            /* query = "UPDATE 'personal' SET"
-                    + "'id' = ?,"
-                    + "'name' =?,"
-                    + "'nachname' =?,"
-                    + "'telefonnummer' =?,"
-                    + "'email' =?,"
-                    + "'adresse' =?,"
-                    + "'arbeit' =?,"
-                    + "'personalnummer' =?,"
-                    + "'gehalt' =? WHERE id = '" + id + "'"; */
             query = "UPDATE 'person' SET"
                     + "'name' =?,"
                     + "'nachname' =?,"
@@ -107,6 +95,11 @@ public class AddPersonalController implements Initializable {
                     + "'adresse' =?,"
                     + "'telefonnummer' =?,"
                     + "'email' =? WHERE id ='" + id + "'";
+            query2 = "UPDATE 'personal' SET"
+                    + "'id' = ?,"
+                    + "'personalnummer' =?,"
+                    + "'gehalt' =?,"
+                    + "'arbeit' =? WHERE id = '" + id + "'";
         }
 
     }
@@ -135,9 +128,10 @@ public class AddPersonalController implements Initializable {
 
         try {
             preparedStatement = connection.prepareStatement(query2);
-            preparedStatement.setString(2, addArbeit.getText());
-            preparedStatement.setString(3, addPnummer.getText());
-            preparedStatement.setString(4, addGehalt.getText());
+            preparedStatement.setString(1, String.valueOf(addId.getText()));
+            preparedStatement.setString(4, addArbeit.getText().toString());
+            preparedStatement.setString(2, String.valueOf(addPnummer.getText()));
+            preparedStatement.setString(3, String.valueOf(addGehalt.getText()));
             preparedStatement.execute();
 
         } catch (SQLException e) {

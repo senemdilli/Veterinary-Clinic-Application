@@ -51,10 +51,12 @@ public class TableControllerPersonal implements Initializable {
     private TableColumn<Personal,Integer> col_personalnummer;
 
     String query = null;
+    String query2 = null;
     Connection connection = null;
     ResultSet resultSet = null;
     PreparedStatement preparedStatement;
     Personal personal = null;
+    Person person = null;
     ObservableList<Personal> oblist = FXCollections.observableArrayList();
 
     @FXML
@@ -158,9 +160,12 @@ public class TableControllerPersonal implements Initializable {
                             public void handle(javafx.scene.input.MouseEvent mouseEvent) {
                                 try {
                                     personal = table.getSelectionModel().getSelectedItem();
+                                    person = table.getSelectionModel().getSelectedItem();
                                     query = "DELETE * FROM 'personal' WHERE id = " + personal.getId();
+                                    query2 = "DELETE * FROM 'person' WHERE id = " + person.getId();
                                     connection = FullDB.connect();
                                     preparedStatement = connection.prepareStatement(query);
+                                    preparedStatement = connection.prepareStatement(query2);
                                     preparedStatement.execute();
                                     refreshTable();
 
