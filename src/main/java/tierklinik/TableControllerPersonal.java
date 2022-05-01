@@ -57,6 +57,7 @@ public class TableControllerPersonal implements Initializable {
     PreparedStatement preparedStatement;
     Personal personal = null;
     Person person = null;
+    int id = 0;
     ObservableList<Personal> oblist = FXCollections.observableArrayList();
 
     @FXML
@@ -101,10 +102,12 @@ public class TableControllerPersonal implements Initializable {
         try {
             personal = table.getSelectionModel().getSelectedItem();
             person = table.getSelectionModel().getSelectedItem();
-            query = "DELETE FROM 'personal' WHERE id = " + personal.getId();
-            query2 = "DELETE FROM 'person' WHERE id = " + person.getId();
+            id = personal.getId();
+            query = "DELETE FROM 'personal' WHERE id = " + id;
+            query2 = "DELETE FROM 'person' WHERE id = " + id;
             connection = FullDB.connect();
             preparedStatement = connection.prepareStatement(query);
+            preparedStatement.execute();
             preparedStatement = connection.prepareStatement(query2);
             preparedStatement.execute();
             refreshTable();
