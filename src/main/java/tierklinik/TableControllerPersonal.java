@@ -15,11 +15,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -96,26 +96,21 @@ public class TableControllerPersonal implements Initializable {
         }
     }
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*
+    @FXML
+    private void deletePersonal(MouseEvent event) {
         try {
-            Connection con = FullDB.connect();
-            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM personal");
-
-            while (rs.next()) {
-                oblist.add(new Personal(rs.getString("name"), rs.getString("nachname"),
-                        rs.getInt("telefonnummer"), rs.getString("email"),
-                        rs.getString("adresse"), rs.getString("arbeit"),
-                        rs.getInt("personalnummer"), rs.getDouble("gehalt")));
-            }
+            personal = table.getSelectionModel().getSelectedItem();
+            person = table.getSelectionModel().getSelectedItem();
+            query = "DELETE FROM 'personal' WHERE id = " + personal.getId();
+            query2 = "DELETE FROM 'person' WHERE id = " + person.getId();
+            connection = FullDB.connect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query2);
+            preparedStatement.execute();
+            refreshTable();
         } catch (SQLException e) {
             Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
         }
-
-        table.setItems(oblist); */
-        loadDate();
     }
 
     @FXML
@@ -137,84 +132,12 @@ public class TableControllerPersonal implements Initializable {
         col_arbeit.setCellValueFactory(new PropertyValueFactory<>("arbeit"));
         col_gehalt.setCellValueFactory(new PropertyValueFactory<>("gehalt"));
 
-
-        Callback<TableColumn<Personal, String>, TableCell<Personal,String>> cellFoctory = (TableColumn<Personal,String> param) -> {
-            final TableCell<Personal,String> cell = new TableCell<Personal,String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if(empty) {
-                        setGraphic(null);
-                    } else {
-
-                        ImageView deleteIcon = new ImageView("/person-remove.png");
-                        ImageView addIcon = new ImageView("/person-add.png");
-                        ImageView refreshIcon = new ImageView("/refresh.png");
-
-                        deleteIcon.setStyle("-fx-cursor: hand;" +"-glyph-size:28px");
-                        addIcon.setStyle("-fx-cursor: hand;" +"-glyph-size:28px");
-                        refreshIcon.setStyle("-fx-cursor: hand;" +"-glyph-size:28px");
-
-                        deleteIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
-                            @Override
-                            public void handle(javafx.scene.input.MouseEvent mouseEvent) {
-                                try {
-                                    personal = table.getSelectionModel().getSelectedItem();
-                                    person = table.getSelectionModel().getSelectedItem();
-                                    query = "DELETE * FROM 'personal' WHERE id = " + personal.getId();
-                                    query2 = "DELETE * FROM 'person' WHERE id = " + person.getId();
-                                    connection = FullDB.connect();
-                                    preparedStatement = connection.prepareStatement(query);
-                                    preparedStatement = connection.prepareStatement(query2);
-                                    preparedStatement.execute();
-                                    refreshTable();
-
-                                } catch (SQLException e) {
-                                    Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
-                                }
-                            }
-                        });
-
-                        addIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
-                            @Override
-                            public void handle(javafx.scene.input.MouseEvent mouseEvent) {
-                                personal = table.getSelectionModel().getSelectedItem();
-                                FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(getClass().getResource("/addPersonal.fxml"));
-                                try {
-                                    loader.load();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                AddPersonalController addPersonalController = loader.getController();
-                                addPersonalController.setUpdate(true);
-                                addPersonalController.setTextField(personal.getId(), personal.getName(), personal.getNachname(),
-                                        personal.getTelefonnummer(), personal.getEmail(), personal.getAdresse(), personal.getArbeit(),
-                                        personal.getPersonalnummer(), personal.getGehalt());
-                                Parent parent =loader.getRoot();
-                                Stage stage = new Stage();
-                                stage.setScene(new Scene(parent));
-                                stage.initStyle(StageStyle.UTILITY);
-                                stage.show();
-                            }
-                        });
-
-                        HBox managebtn = new HBox(refreshIcon, addIcon, deleteIcon);
-                        managebtn.setStyle("-fx-alignment: center");
-                        /* HBox.setMargin(deleteIcon, new Insets());
-                        HBox.setMargin(addIcon,);
-                        HBox.setMargin(refreshIcon,); */
-
-                        setGraphic(managebtn);
-
-                    }
-                    setText(null);
-                }
-            };
-            return cell;
-
-        };
         table.setItems(oblist);
 
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadDate();
     }
 }

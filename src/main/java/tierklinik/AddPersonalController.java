@@ -1,6 +1,5 @@
 package tierklinik;
 
-import Classes.Person;
 import Classes.Personal;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -113,9 +112,6 @@ public class AddPersonalController implements Initializable {
             preparedStatement.setString(5, String.valueOf(addTel.getText()));
             preparedStatement.setString(6, addEmail.getText().toString());
             preparedStatement.setString(4, addAdresse.getText().toString());
-            //preparedStatement.setString(7, addArbeit.getText());
-            //preparedStatement.setString(8, addPnummer.getText());
-            //preparedStatement.setString(9, addGehalt.getText());
             preparedStatement.execute();
 
         } catch (SQLException e) {
