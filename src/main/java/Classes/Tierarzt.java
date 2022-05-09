@@ -7,8 +7,8 @@ public class Tierarzt extends Personal {
     public String operationen;
     //private double gehalt;
 
-    public Tierarzt(String name, String nachname) {
-        super(name, nachname);
+    public Tierarzt(Integer id, String name, String nachname) {
+        super(id, name, nachname);
     }
 
     //set

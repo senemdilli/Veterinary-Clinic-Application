@@ -2,20 +2,21 @@ package Classes;
 
 public class Tier extends Person {
 
-    private String tier_id;
-    private double gewicht;
-    private double lange;
+    private Integer tierid;
+    private Double gewicht;
+    private Double lange;
     private String operationen;
     private String geschichte;
-    private String hb_name;
-    private String hb_nachname;
-    private String hb_id;
-    private double kontostand;
+    private Integer hbid;
+    private String hbname;
+    private String hbnachname;
+    private Double kontostand;
 
-    public Tier(String name, String nachname, String tier_id, String hb_id) {
-        super(name, nachname);
-        this.tier_id = tier_id;
-        this.hb_id = hb_id;
+    public Tier(Integer tierid, String name, String nachname, Integer telefonnummer, String email, String adresse, String hbname, Integer hbid, Double kontostand) {
+        super(tierid, name, nachname, telefonnummer, email, adresse);
+        this.hbname = hbname;
+        this.hbid = hbid;
+        this.kontostand = kontostand;
     }
 
     //set
@@ -23,27 +24,23 @@ public class Tier extends Person {
         this.geschichte = geschichte;
     }
 
-    public void setGewicht(double gewicht) {
+    public void setGewicht(Double gewicht) {
         this.gewicht = gewicht;
     }
 
-    public void setHb_name(String hb_name) {
-        this.hb_name = hb_name;
+    public void setHbName(String hbname) {
+        this.hbname = hbname;
     }
 
-    public void setHb_nachname(String hb_nachname) {
-        this.hb_nachname = hb_nachname;
+    public void setHbNachname(String hbnachname) {
+        this.hbnachname = hbnachname;
     }
 
-    public void setHb_id(String hb_id) {
-        this.hb_id = hb_id;
-    }
-
-    public void setKontostand(double kontostand) {
+    public void setKontostand(Double kontostand) {
         this.kontostand = kontostand;
     }
 
-    public void setLange(double lange) {
+    public void setLange(Double lange) {
         this.lange = lange;
     }
 
@@ -51,20 +48,24 @@ public class Tier extends Person {
         this.operationen = operationen;
     }
 
-    public void setTier_id(String tier_id) {
-        this.tier_id = tier_id;
+    public void setTierId(Integer tierid) {
+        this.tierid = tierid;
+    }
+
+    public void setHBId(Integer hbid) {
+        this.hbid = hbid;
     }
 
     //get
-    public double getGewicht() {
+    public Double getGewicht() {
         return gewicht;
     }
 
-    public double getKontostand() {
+    public Double getKontostand() {
         return kontostand;
     }
 
-    public double getLange() {
+    public Double getLange() {
         return lange;
     }
 
@@ -72,23 +73,23 @@ public class Tier extends Person {
         return geschichte;
     }
 
-    public String getHb_id() {
-        return hb_id;
+    public String getHbName() {
+        return hbname;
     }
 
-    public String getHb_name() {
-        return hb_name;
-    }
-
-    public String getHb_nachname() {
-        return hb_nachname;
+    public String getHbNachname() {
+        return hbnachname;
     }
 
     public String getOperationen() {
         return operationen;
     }
 
-    public String getTier_id() {
-        return tier_id;
+    public Integer getTierId() {
+        return tierid;
+    }
+
+    public Integer getHbid() {
+        return hbid;
     }
 }

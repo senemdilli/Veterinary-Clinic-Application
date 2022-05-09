@@ -38,7 +38,16 @@ public class MainInterfaceController {
 
     @FXML
     private void getTierListe() {
-
+        try {
+            Parent parent = FXMLLoader.load(Main.class.getResource("/TableList_Tier.fxml"));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

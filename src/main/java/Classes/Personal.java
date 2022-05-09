@@ -6,8 +6,8 @@ public class Personal extends Person {
     private Double gehalt;
     private String arbeit;
 
-    public Personal(String name, String nachname) {
-        super(name, nachname);
+    public Personal(Integer id, String name, String nachname) {
+        super(id, name, nachname);
     }
 
     public Personal(int id, String name, String nachname, int telefonnummer, String email, String adresse, String arbeit, int personalnummer, double gehalt) {
