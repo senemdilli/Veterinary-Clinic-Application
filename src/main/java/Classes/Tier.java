@@ -9,7 +9,6 @@ public class Tier extends Person {
     private String geschichte;
     private Integer hbid;
     private String hbname;
-    private String hbnachname;
     private Double kontostand;
 
     public Tier(Integer tierid, String name, String nachname, Integer telefonnummer, String email, String adresse, String hbname, Integer hbid, Double kontostand) {
@@ -30,10 +29,6 @@ public class Tier extends Person {
 
     public void setHbName(String hbname) {
         this.hbname = hbname;
-    }
-
-    public void setHbNachname(String hbnachname) {
-        this.hbnachname = hbnachname;
     }
 
     public void setKontostand(Double kontostand) {
@@ -75,10 +70,6 @@ public class Tier extends Person {
 
     public String getHbName() {
         return hbname;
-    }
-
-    public String getHbNachname() {
-        return hbnachname;
     }
 
     public String getOperationen() {

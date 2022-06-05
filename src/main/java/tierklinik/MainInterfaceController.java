@@ -1,7 +1,5 @@
 package tierklinik;
 
-import Classes.Person;
-import Classes.Personal;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,8 +17,6 @@ public class MainInterfaceController {
     Connection connection = null;
     ResultSet resultSet = null;
     PreparedStatement preparedStatement;
-    Personal personal = null;
-    Person person = null;
 
     @FXML
     private void getPersonalListe() {
@@ -51,8 +47,17 @@ public class MainInterfaceController {
     }
 
     @FXML
-    private void getKalendarView() {
-
+    private void getTerminView() {
+        try {
+            Parent parent = FXMLLoader.load(Main.class.getResource("/TableList_Appointment.fxml"));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
