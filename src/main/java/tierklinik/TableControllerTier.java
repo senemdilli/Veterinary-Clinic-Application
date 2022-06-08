@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,8 +85,8 @@ public class TableControllerTier implements Initializable {
                         resultSet.getString("email"), resultSet.getString("adresse"),
                         resultSet.getString("hbname"), resultSet.getInt("hbid"),
                         resultSet.getDouble("kontostand")));
-                table.setItems(oblist);
             }
+            table.setItems(oblist);
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -89,8 +89,8 @@ public class TableControllerPersonal implements Initializable {
                         resultSet.getString("email"), resultSet.getString("adresse"),
                         resultSet.getString("arbeit"), resultSet.getInt("personalnummer"),
                         resultSet.getDouble("gehalt")));
-                table.setItems(oblist);
             }
+            table.setItems(oblist);
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -43,7 +43,6 @@ public class TableControllerAppointment implements Initializable {
     private TableColumn<Person,String> col_tiernachname;
     @FXML
     private TableColumn<Personal,String> col_tierarzt;
-
     @FXML
     private TableColumn<Termin,String> col_angabe;
     @FXML
@@ -89,9 +88,9 @@ public class TableControllerAppointment implements Initializable {
                         resultSet.getString("date"), resultSet.getString("startzeit"),
                         resultSet.getString("endezeit"), resultSet.getString("tiername"),
                         resultSet.getString("tiernachname"), resultSet.getString("hbname"),
-                        resultSet.getString("tierarzt")));
-                table.setItems(oblist);
+                        resultSet.getString("tierarztname")));
             }
+            table.setItems(oblist);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,7 +125,7 @@ public class TableControllerAppointment implements Initializable {
         col_tiername.setCellValueFactory(new PropertyValueFactory<>("tiername"));
         col_hbname.setCellValueFactory(new PropertyValueFactory<>("hbname"));
         col_tiernachname.setCellValueFactory(new PropertyValueFactory<>("tiernachname"));
-        col_tierarzt.setCellValueFactory(new PropertyValueFactory<>("tierarzt"));
+        col_tierarzt.setCellValueFactory(new PropertyValueFactory<>("tierarztname"));
         col_angabe.setCellValueFactory(new PropertyValueFactory<>("angabe"));
         col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         col_startzeit.setCellValueFactory(new PropertyValueFactory<>("startzeit"));
