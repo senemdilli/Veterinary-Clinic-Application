@@ -76,7 +76,7 @@ public class TableControllerAppointment implements Initializable {
     }
 
     @FXML
-    private void refreshTable() {
+    protected void refreshTable() {
         try {
             oblist.clear();
             query = "SELECT * FROM termin";
@@ -84,7 +84,7 @@ public class TableControllerAppointment implements Initializable {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                oblist.add(new Termin(resultSet.getInt("terminid"), resultSet.getString("angabe"),
+                oblist.add(new Termin(resultSet.getString("angabe"),
                         resultSet.getString("date"), resultSet.getString("startzeit"),
                         resultSet.getString("endezeit"), resultSet.getString("tiername"),
                         resultSet.getString("tiernachname"), resultSet.getString("hbname"),

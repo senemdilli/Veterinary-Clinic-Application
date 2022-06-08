@@ -229,5 +229,11 @@
             <TableColumn fx:id="col_tierarzt" prefWidth="75.0" text="Tierarzt" />
         </columns>
       </TableView>
+      <JFXButton fx:id="refreshTermin" contentDisplay="GRAPHIC_ONLY" layoutX="527.0" layoutY="229.0" onMouseClicked="#refreshTermin" prefHeight="47.0" prefWidth="54.0" />
+      <ImageView fitHeight="30.0" fitWidth="50.0" layoutX="540.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="500.0">
+         <image>
+            <Image url="@png/calendar_refresh.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

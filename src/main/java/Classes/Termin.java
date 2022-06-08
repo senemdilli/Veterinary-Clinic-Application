@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.ArrayList;
+
 public class Termin {
 
     private Integer terminid;
@@ -12,8 +14,10 @@ public class Termin {
     private String hbname;
     private String tierarztname;
 
-    public Termin(Integer terminid, String angabe, String date, String startzeit, String endezeit, String tiername, String tiernachname, String hbname, String tierarztname) {
-        this.terminid = terminid;
+    private static ArrayList<Termin> terminList = new ArrayList<>();
+
+    public Termin(String angabe, String date, String startzeit, String endezeit, String tiername, String tiernachname, String hbname, String tierarztname) {
+        this.terminid = terminList.size();
         this.angabe = angabe;
         this.date = date;
         this.startzeit = startzeit;
@@ -62,8 +66,8 @@ public class Termin {
     }
 
     // get
-    public Integer getTerminid() {
-        return terminid;
+    public static Integer getTerminid() {
+        return terminList.size();
     }
 
     public String getAngabe() {
