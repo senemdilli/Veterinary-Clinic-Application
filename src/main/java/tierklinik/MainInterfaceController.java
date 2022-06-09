@@ -6,6 +6,7 @@ import Classes.Termin;
 import Classes.Tier;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +24,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainInterfaceController implements Initializable {
@@ -49,10 +53,12 @@ public class MainInterfaceController implements Initializable {
     String query = null;
     ObservableList<Termin> oblist = FXCollections.observableArrayList();
 
+    //Date now = new Date();
+
     @FXML
     private void getPersonalListe() {
         try {
-            Parent parent = FXMLLoader.load(Main.class.getResource("/TableList_Personal.fxml"));
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/TableList_Personal.fxml")));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -66,7 +72,7 @@ public class MainInterfaceController implements Initializable {
     @FXML
     private void getTierListe() {
         try {
-            Parent parent = FXMLLoader.load(Main.class.getResource("/TableList_Tier.fxml"));
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/TableList_Tier.fxml")));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -80,7 +86,7 @@ public class MainInterfaceController implements Initializable {
     @FXML
     private void getTerminView() {
         try {
-            Parent parent = FXMLLoader.load(Main.class.getResource("/TableList_Appointment.fxml"));
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/TableList_Appointment.fxml")));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -104,13 +110,15 @@ public class MainInterfaceController implements Initializable {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                oblist.add(new Termin(resultSet.getString("angabe"),
-                        resultSet.getString("date"), resultSet.getString("startzeit"),
-                        resultSet.getString("endezeit"), resultSet.getString("tiername"),
+                Termin termin = new Termin(resultSet.getString("angabe"), resultSet.getString("tiername"),
                         resultSet.getString("tiernachname"), resultSet.getString("hbname"),
-                        resultSet.getString("tierarztname")));
-                terminTable.setItems(oblist);
+                        resultSet.getString("tierarztname"));
+                termin.setDate(resultSet.getString("date"));
+                termin.setStartzeit(resultSet.getString("startzeit"));
+                termin.setEndezeit(resultSet.getString("endezeit"));
+                oblist.add(termin);
             }
+            terminTable.setItems(oblist);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,7 +140,10 @@ public class MainInterfaceController implements Initializable {
         col_angabe.setCellValueFactory(new PropertyValueFactory<>("angabe"));
         col_startzeit.setCellValueFactory(new PropertyValueFactory<>("startzeit"));
 
-        terminTable.setItems(oblist);
+        LocalDate today = LocalDate.now();
+        Date date = java.sql.Date.valueOf(today);
+        FilteredList<Termin> filteredData = new FilteredList<>(oblist, p -> p.getDate().equals(date));
+        terminTable.setItems(filteredData.sorted());
 
     }
 

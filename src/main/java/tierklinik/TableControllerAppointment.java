@@ -26,6 +26,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +60,19 @@ public class TableControllerAppointment implements Initializable {
     Termin termin = null;
     int id = 0;
     ObservableList<Termin> oblist = FXCollections.observableArrayList();
+    private static ArrayList<Termin> terminList = new ArrayList<>();
+
+    public static int getTerminId() {
+        return terminList.size();
+    }
+
+    public static Termin getTermin(int id) {
+        return terminList.get(id);
+    }
+
+    public static void addTermin(Termin termin) {
+        terminList.add(termin);
+    }
 
     @FXML
     private void getAddView() {
@@ -84,11 +98,13 @@ public class TableControllerAppointment implements Initializable {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                oblist.add(new Termin(resultSet.getString("angabe"),
-                        resultSet.getString("date"), resultSet.getString("startzeit"),
-                        resultSet.getString("endezeit"), resultSet.getString("tiername"),
+                Termin termin = new Termin(resultSet.getString("angabe"), resultSet.getString("tiername"),
                         resultSet.getString("tiernachname"), resultSet.getString("hbname"),
-                        resultSet.getString("tierarztname")));
+                        resultSet.getString("tierarztname"));
+                termin.setDate(resultSet.getString("date"));
+                termin.setStartzeit(resultSet.getString("startzeit"));
+                termin.setEndezeit(resultSet.getString("endezeit"));
+                oblist.add(termin);
             }
             table.setItems(oblist);
 

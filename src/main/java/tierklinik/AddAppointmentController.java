@@ -40,7 +40,7 @@ public class AddAppointmentController implements Initializable {
     PreparedStatement preparedStatement;
     Termin termin = null;
     private boolean update;
-    int terminid = Termin.getTerminid();
+    int terminid = TableControllerAppointment.getTerminId();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,8 +56,7 @@ public class AddAppointmentController implements Initializable {
         }
 
         System.out.println(terminid);
-        int terminid = Termin.getTerminid();
-        String tieNname = addTiername.getText();
+        String tierNname = addTiername.getText();
         String tierNachname = addTiernachname.getText();
         String HBname = addHBname.getText();
         String tierarztName = addTierarztname.getText();
@@ -66,7 +65,7 @@ public class AddAppointmentController implements Initializable {
         String startzeit = addStartzeit.getText();
         String endezeit = addEndezeit.getText();
 
-        if(Integer.toString(terminid).isEmpty() || tieNname.isEmpty() || tierNachname.isEmpty() || HBname.isEmpty() || tierarztName.isEmpty() || angabe.isEmpty() ||
+        if(Integer.toString(terminid).isEmpty() || tierNname.isEmpty() || tierNachname.isEmpty() || HBname.isEmpty() || tierarztName.isEmpty() || angabe.isEmpty() ||
                 date.isEmpty() || startzeit.isEmpty()|| endezeit.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
@@ -76,6 +75,8 @@ public class AddAppointmentController implements Initializable {
             getQuery();
             insertTermin();
             clean();
+            Termin newTermin = new Termin(tierNname, tierNachname, HBname, tierarztName, angabe);
+            TableControllerAppointment.addTermin(newTermin);
         }
     }
 

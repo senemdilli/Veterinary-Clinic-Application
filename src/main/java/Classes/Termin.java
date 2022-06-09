@@ -1,27 +1,33 @@
 package Classes;
 
+import tierklinik.TableControllerAppointment;
+
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Termin {
 
-    private Integer terminid;
+    private static Integer terminid;
     private String angabe;
-    private String date;
-    private String startzeit;
-    private String endezeit;
+    private Date date;
+    private Time startzeit;
+    private Time endezeit;
     private String tiername;
     private String tiernachname;
     private String hbname;
     private String tierarztname;
 
-    private static ArrayList<Termin> terminList = new ArrayList<>();
+    SimpleDateFormat timeformat = new SimpleDateFormat("hh:mm");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-    public Termin(String angabe, String date, String startzeit, String endezeit, String tiername, String tiernachname, String hbname, String tierarztname) {
-        this.terminid = terminList.size();
+    public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname) {
+        terminid = TableControllerAppointment.getTerminId();
         this.angabe = angabe;
-        this.date = date;
-        this.startzeit = startzeit;
-        this.endezeit = endezeit;
         this.tiername = tiername;
         this.tiernachname = tiernachname;
         this.hbname = hbname;
@@ -29,24 +35,39 @@ public class Termin {
     }
 
     // set
-    public void setTerminid(Integer terminid) {
+    public void setTerminId(int terminid) {
         this.terminid = terminid;
     }
-
     public void setAngabe(String angabe) {
         this.angabe = angabe;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        try {
+            this.date = dateFormat.parse(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void setStartzeit(String startzeit) {
-        this.startzeit = startzeit;
+    public void setStartzeit(String gegebenstartzeit) {
+        Time start;
+        try {
+            start = new Time(timeformat.parse(gegebenstartzeit).getTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        startzeit = start;
     }
 
-    public void setEndezeit(String endezeit) {
-        this.endezeit = endezeit;
+    public void setEndezeit(String gegebenendezeit) {
+        Time ende;
+        try {
+            ende = new Time(timeformat.parse(gegebenendezeit).getTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        endezeit = ende;
     }
 
     public void setTiername(String tiername) {
@@ -67,22 +88,22 @@ public class Termin {
 
     // get
     public static Integer getTerminid() {
-        return terminList.size();
+        return terminid;
     }
 
     public String getAngabe() {
         return angabe;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public String getStartzeit() {
+    public Time getStartzeit() {
         return startzeit;
     }
 
-    public String getEndezeit() {
+    public Time getEndezeit() {
         return endezeit;
     }
 
@@ -100,5 +121,16 @@ public class Termin {
 
     public String getTierarztname() {
         return tierarztname;
+    }
+
+    public static boolean controlDate(int terminid) {
+        if(terminid == -1) return false;
+        Termin termin = TableControllerAppointment.getTermin(terminid);
+        Date termindate = termin.getDate();
+        Date today = new Date();
+        if(termindate.after(today)) {
+            return true;
+        }
+        return false;
     }
 }
