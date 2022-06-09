@@ -104,7 +104,7 @@ public class Termin {
     }
 
     // get
-    public static Integer getTerminid(Termin termin) {
+    public static Integer getTerminid() {
         return terminid;
     }
 
