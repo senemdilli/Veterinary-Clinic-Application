@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -40,7 +39,15 @@ public class AddAppointmentController implements Initializable {
     PreparedStatement preparedStatement;
     Termin termin = null;
     private boolean update;
-    int terminid = TableControllerAppointment.getTerminId();
+    int terminid;
+
+    {
+        try {
+            terminid = TableControllerAppointment.getTerminId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,7 +63,7 @@ public class AddAppointmentController implements Initializable {
         }
 
         System.out.println(terminid);
-        String tierNname = addTiername.getText();
+        String tierName = addTiername.getText();
         String tierNachname = addTiernachname.getText();
         String HBname = addHBname.getText();
         String tierarztName = addTierarztname.getText();
@@ -65,7 +72,7 @@ public class AddAppointmentController implements Initializable {
         String startzeit = addStartzeit.getText();
         String endezeit = addEndezeit.getText();
 
-        if(Integer.toString(terminid).isEmpty() || tierNname.isEmpty() || tierNachname.isEmpty() || HBname.isEmpty() || tierarztName.isEmpty() || angabe.isEmpty() ||
+        if(tierName.isEmpty() || tierNachname.isEmpty() || HBname.isEmpty() || tierarztName.isEmpty() || angabe.isEmpty() ||
                 date.isEmpty() || startzeit.isEmpty()|| endezeit.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
@@ -75,8 +82,6 @@ public class AddAppointmentController implements Initializable {
             getQuery();
             insertTermin();
             clean();
-            Termin newTermin = new Termin(tierNname, tierNachname, HBname, tierarztName, angabe);
-            TableControllerAppointment.addTermin(newTermin);
         }
     }
 

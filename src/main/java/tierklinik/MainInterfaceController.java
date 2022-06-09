@@ -140,10 +140,12 @@ public class MainInterfaceController implements Initializable {
         col_angabe.setCellValueFactory(new PropertyValueFactory<>("angabe"));
         col_startzeit.setCellValueFactory(new PropertyValueFactory<>("startzeit"));
 
+
         LocalDate today = LocalDate.now();
         Date date = java.sql.Date.valueOf(today);
         FilteredList<Termin> filteredData = new FilteredList<>(oblist, p -> p.getDate().equals(date));
         terminTable.setItems(filteredData.sorted());
+        //terminTable.setItems(oblist);
 
     }
 

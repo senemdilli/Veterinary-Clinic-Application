@@ -2,6 +2,7 @@ package Classes;
 
 import tierklinik.TableControllerAppointment;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,13 +26,29 @@ public class Termin {
     SimpleDateFormat timeformat = new SimpleDateFormat("hh:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-    public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname) {
+    public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname) throws SQLException {
         terminid = TableControllerAppointment.getTerminId();
         this.angabe = angabe;
         this.tiername = tiername;
         this.tiernachname = tiernachname;
         this.hbname = hbname;
         this.tierarztname = tierarztname;
+    }
+
+    public Termin(int terminid, String tiername, String hbname, String tiernachname, String tierarzt, String angabe, String date, String startzeit, String endezeit) {
+        this.terminid = terminid;
+        this.angabe = angabe;
+        this.tiername = tiername;
+        this.tiernachname = tiernachname;
+        this.hbname = hbname;
+        this.tierarztname = tierarzt;
+        try {
+            this.date = dateFormat.parse(date);
+            this.startzeit = Time.valueOf(startzeit);
+            this.endezeit = Time.valueOf(endezeit);
+        } catch (ParseException ex) {
+            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // set
@@ -87,7 +104,7 @@ public class Termin {
     }
 
     // get
-    public static Integer getTerminid() {
+    public static Integer getTerminid(Termin termin) {
         return terminid;
     }
 
@@ -123,7 +140,7 @@ public class Termin {
         return tierarztname;
     }
 
-    public static boolean controlDate(int terminid) {
+    public static boolean controlDate(int terminid) throws SQLException {
         if(terminid == -1) return false;
         Termin termin = TableControllerAppointment.getTermin(terminid);
         Date termindate = termin.getDate();
