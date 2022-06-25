@@ -1,16 +1,13 @@
 package tierklinik;
 
-import Classes.Personal;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -38,9 +35,7 @@ public class AddPersonalController implements Initializable {
     String query = null;
     String query2 = null;
     Connection connection = null;
-    ResultSet resultSet = null;
     PreparedStatement preparedStatement;
-    Personal personal = null;
     private boolean update;
     int id;
 
@@ -50,7 +45,7 @@ public class AddPersonalController implements Initializable {
     }
 
     @FXML
-    private void save(MouseEvent event) {
+    private void save() {
         try {
             connection = FullDB.connect();
         } catch (SQLException e) {
@@ -107,11 +102,11 @@ public class AddPersonalController implements Initializable {
         try {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(3, String.valueOf(addId.getText()));
-            preparedStatement.setString(1, addName.getText().toString());
-            preparedStatement.setString(2, addNachname.getText().toString());
+            preparedStatement.setString(1, addName.getText());
+            preparedStatement.setString(2, addNachname.getText());
             preparedStatement.setString(5, String.valueOf(addTel.getText()));
-            preparedStatement.setString(6, addEmail.getText().toString());
-            preparedStatement.setString(4, addAdresse.getText().toString());
+            preparedStatement.setString(6, addEmail.getText());
+            preparedStatement.setString(4, addAdresse.getText());
             preparedStatement.execute();
 
         } catch (SQLException e) {
@@ -125,7 +120,7 @@ public class AddPersonalController implements Initializable {
         try {
             preparedStatement = connection.prepareStatement(query2);
             preparedStatement.setString(1, String.valueOf(addId.getText()));
-            preparedStatement.setString(4, addArbeit.getText().toString());
+            preparedStatement.setString(4, addArbeit.getText());
             preparedStatement.setString(2, String.valueOf(addPnummer.getText()));
             preparedStatement.setString(3, String.valueOf(addGehalt.getText()));
             preparedStatement.execute();

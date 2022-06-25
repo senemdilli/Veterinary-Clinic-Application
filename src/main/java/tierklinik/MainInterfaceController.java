@@ -53,8 +53,6 @@ public class MainInterfaceController implements Initializable {
     String query = null;
     ObservableList<Termin> oblist = FXCollections.observableArrayList();
 
-    //Date now = new Date();
-
     @FXML
     private void getPersonalListe() {
         try {
@@ -99,7 +97,16 @@ public class MainInterfaceController implements Initializable {
 
     @FXML
     private void getZahlungView() {
-
+        try {
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/TableList_Kontenstelle.fxml")));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     private void refreshTermin() {
@@ -126,6 +133,7 @@ public class MainInterfaceController implements Initializable {
     }
     @FXML
     private void loadDate() {
+
         try {
             connection = FullDB.connect();
         } catch (SQLException e) {
@@ -145,7 +153,6 @@ public class MainInterfaceController implements Initializable {
         Date date = java.sql.Date.valueOf(today);
         FilteredList<Termin> filteredData = new FilteredList<>(oblist, p -> p.getDate().equals(date));
         terminTable.setItems(filteredData.sorted());
-        //terminTable.setItems(oblist);
 
     }
 

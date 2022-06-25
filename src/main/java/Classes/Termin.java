@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +21,7 @@ public class Termin {
     private String tiernachname;
     private String hbname;
     private String tierarztname;
+    private String zustand = "nicht";
 
     SimpleDateFormat timeformat = new SimpleDateFormat("hh:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -51,7 +51,7 @@ public class Termin {
         }
     }
 
-    // set
+    // Setter
     public void setTerminId(int terminid) {
         this.terminid = terminid;
     }
@@ -91,6 +91,10 @@ public class Termin {
         this.tiername = tiername;
     }
 
+    public void setZustand(String zustand) {
+        this.zustand = zustand;
+    }
+
     public void setTiernachname(String tiernachname) {
         this.tiernachname = tiernachname;
     }
@@ -103,7 +107,7 @@ public class Termin {
         this.tierarztname = tierarztname;
     }
 
-    // get
+    // Getter
     public static Integer getTerminid() {
         return terminid;
     }
@@ -122,6 +126,10 @@ public class Termin {
 
     public Time getEndezeit() {
         return endezeit;
+    }
+
+    public String getZustand() {
+        return zustand;
     }
 
     public String getTiername() {

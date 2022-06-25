@@ -107,11 +107,11 @@ public class AddTierController implements Initializable {
         try {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(3, String.valueOf(addTierId.getText()));
-            preparedStatement.setString(1, addTierName.getText().toString());
-            preparedStatement.setString(2, addNachname.getText().toString());
+            preparedStatement.setString(1, addTierName.getText());
+            preparedStatement.setString(2, addNachname.getText());
             preparedStatement.setString(5, String.valueOf(addTel.getText()));
-            preparedStatement.setString(6, addEmail.getText().toString());
-            preparedStatement.setString(4, addAdresse.getText().toString());
+            preparedStatement.setString(6, addEmail.getText());
+            preparedStatement.setString(4, addAdresse.getText());
             preparedStatement.execute();
 
         } catch (SQLException e) {
@@ -125,7 +125,7 @@ public class AddTierController implements Initializable {
         try {
             preparedStatement = connection.prepareStatement(query2);
             preparedStatement.setString(1, String.valueOf(addTierId.getText()));
-            preparedStatement.setString(2, addHBName.getText().toString());
+            preparedStatement.setString(2, addHBName.getText());
             preparedStatement.setString(3, String.valueOf(addHBId.getText()));
             preparedStatement.setString(4, String.valueOf(addKontostand.getText()));
             preparedStatement.execute();

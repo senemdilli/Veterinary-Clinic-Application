@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -30,7 +29,7 @@ public class TableControllerAppointment implements Initializable {
     @FXML
     private TableView<Termin> table;
     @FXML
-    private TableColumn<Termin,Integer> col_terminid;
+    private TableColumn<Termin,Integer> col_zustand;
     @FXML
     private TableColumn<Person,String> col_tiername;
     @FXML
@@ -57,19 +56,6 @@ public class TableControllerAppointment implements Initializable {
     Termin termin = null;
     int id = 0;
     ObservableList<Termin> oblist = FXCollections.observableArrayList();
-    /*private static ArrayList<Termin> terminList = new ArrayList<>();
-
-    public static int getTerminId() {
-        return terminList.size();
-    }
-
-    public static Termin getTermin(int id) {
-        return terminList.get(id);
-    }
-
-    public static void addTermin(Termin termin) {
-        terminList.add(termin);
-    } */
 
     public static int getTerminId() throws SQLException {
         query = "SELECT * FROM termin";
@@ -131,6 +117,7 @@ public class TableControllerAppointment implements Initializable {
                         resultSet.getString("tiernachname"), resultSet.getString("hbname"),
                         resultSet.getString("tierarztname"));
                 termin.setTerminId(resultSet.getInt("terminid"));
+                termin.setZustand(resultSet.getString("zustand"));
                 termin.setDate(resultSet.getString("date"));
                 termin.setStartzeit(resultSet.getString("startzeit"));
                 termin.setEndezeit(resultSet.getString("endezeit"));
@@ -144,10 +131,10 @@ public class TableControllerAppointment implements Initializable {
     }
 
     @FXML
-    private void removeTermin(MouseEvent event) {
+    private void removeTermin() {
         try {
             termin = table.getSelectionModel().getSelectedItem();
-            id = termin.getTerminid();
+            id = Termin.getTerminid();
             query = "DELETE FROM 'termin' WHERE terminid = " + id;
             connection = FullDB.connect();
             preparedStatement = connection.prepareStatement(query);
@@ -167,7 +154,7 @@ public class TableControllerAppointment implements Initializable {
         }
         refreshTable();
 
-        col_terminid.setCellValueFactory(new PropertyValueFactory<>("terminid"));
+        col_zustand.setCellValueFactory(new PropertyValueFactory<>("zustand"));
         col_tiername.setCellValueFactory(new PropertyValueFactory<>("tiername"));
         col_hbname.setCellValueFactory(new PropertyValueFactory<>("hbname"));
         col_tiernachname.setCellValueFactory(new PropertyValueFactory<>("tiernachname"));
@@ -178,6 +165,21 @@ public class TableControllerAppointment implements Initializable {
         col_endezeit.setCellValueFactory(new PropertyValueFactory<>("endezeit"));
 
         table.setItems(oblist);
+    }
+
+    @FXML
+    private void makeDone() {
+        try {
+            termin = table.getSelectionModel().getSelectedItem();
+            id = Termin.getTerminid();
+            query = "UPDATE termin SET zustand = 'erledigt' WHERE terminid = " + id;
+            connection = FullDB.connect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.execute();
+            refreshTable();
+        } catch (SQLException e) {
+            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     @Override
