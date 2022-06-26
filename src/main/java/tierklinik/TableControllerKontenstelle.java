@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -34,6 +35,8 @@ public class TableControllerKontenstelle {
     private TableColumn<Zahlung,String> col_zahlungsart;
     @FXML
     private TableColumn<Zahlung,Double> col_zahlungsbetrag;
+    @FXML
+    private ListView<Double> col_gesamtbetrag;
 
     static String query = null;
     static Connection connection = null;
@@ -135,8 +138,8 @@ public class TableControllerKontenstelle {
     private void makePaid() {
         try {
             zahlung = table.getSelectionModel().getSelectedItem();
-            id = Termin.getTerminid();
-            query = "UPDATE zahlung SET zustand = 'gezahlt' WHERE zahlungid = " + id;
+            id = Zahlung.getZahlungid();
+            query = "UPDATE zahlung SET zustand = 'gezahlt', zahlungsbetrag =  ABS(zahlungsbetrag) WHERE zahlungid = " + id;
             connection = FullDB.connect();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.execute();
@@ -146,7 +149,20 @@ public class TableControllerKontenstelle {
         }
     }
 
+    @FXML
+    private void getTotalAmount() {
+        try {
+            query = "SELECT SUM(zahlungsbetrag) FROM zahlung";
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            col_gesamtbetrag.setItems(FXCollections.observableArrayList(resultSet.getDouble("SUM(zahlungsbetrag)")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void initialize() {
         loadDate();
+        getTotalAmount();
     }
 }

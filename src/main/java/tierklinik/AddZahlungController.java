@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -19,9 +20,9 @@ public class AddZahlungController implements Initializable {
     @FXML
     private TextField addZahlungsbetrag;
     @FXML
-    private TextField addHbname;
+    private ChoiceBox<String> addHbname;
     @FXML
-    private TextField addTiername;
+    private ChoiceBox<String> addTiername;
     @FXML
     private TextField addNachname;
 
@@ -37,10 +38,34 @@ public class AddZahlungController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             zahlungid = TableControllerKontenstelle.getZahlungid();
+            getHbname();
+            getTiername();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         addZahlungsart.getItems().addAll(zahlungsarten);
+    }
+
+    @FXML
+    public void getHbname() throws SQLException {
+        query = "SELECT hbname FROM 'tier'";
+        connection = FullDB.connect();
+        preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            addHbname.getItems().add(resultSet.getString("hbname"));
+        }
+    }
+
+    @FXML
+    public void getTiername() throws SQLException {
+        query = "SELECT name FROM 'person' WHERE id = (SELECT tierid FROM 'tier' WHERE hbname =" + addHbname.getValue() + ")";
+        connection = FullDB.connect();
+        preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            addTiername.getItems().add(resultSet.getString("name"));
+        }
     }
 
     @FXML
@@ -51,16 +76,16 @@ public class AddZahlungController implements Initializable {
             e.printStackTrace();
         }
 
-        String tiername = addTiername.getText();
+        String tiername = addTiername.getValue();
         String nachname = addNachname.getText();
-        String hbname = addHbname.getText();
+        String hbname = addHbname.getValue();
         String zahlungsart = addZahlungsart.getValue();
-        double zahlungsbetrag = Double.parseDouble(addZahlungsbetrag.getText());
+        String zahlungsbetrag = addZahlungsbetrag.getText();
 
-        if(tiername.isEmpty() || nachname.isEmpty() || hbname.isEmpty() || zahlungsart.isEmpty() || Double.isNaN(zahlungsbetrag)) {
+        if(tiername.isEmpty() || nachname.isEmpty() || hbname.isEmpty() || zahlungsart.isEmpty() || zahlungsbetrag.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Bitte füllen Sie alle Daten aus.");
+            alert.setTitle("Fehler");
+            alert.setHeaderText("Bitte alle Felder ausfüllen!");
             alert.showAndWait();
         } else {
             getQuery();
@@ -92,8 +117,8 @@ public class AddZahlungController implements Initializable {
             preparedStatement.setString(7, String.valueOf(zahlungid));
             preparedStatement.setString(1, addZahlungsart.getValue());
             preparedStatement.setString(2, addZahlungsbetrag.getText());
-            preparedStatement.setString(3, addHbname.getText());
-            preparedStatement.setString(4, addTiername.getText());
+            preparedStatement.setString(3, addHbname.getValue());
+            preparedStatement.setString(4, addTiername.getValue());
             preparedStatement.setString(5, addNachname.getText());
             preparedStatement.setString(6, "nicht");
             preparedStatement.execute();
@@ -108,17 +133,17 @@ public class AddZahlungController implements Initializable {
     private void clean() {
         addZahlungsart.setValue(null);
         addZahlungsbetrag.setText(null);
-        addHbname.setText(null);
-        addTiername.setText(null);
+        addHbname.setValue(null);
+        addTiername.setValue(null);
         addNachname.setText(null);
     }
 
     void setTextField(int zahlungid, String zahlungsart, Double zahlungsbetrag, String hbname, String tiername, String nachname) {
         this.zahlungid = zahlungid;
         addZahlungsart.setValue(zahlungsart);
-        addZahlungsbetrag.setText(zahlungsbetrag.toString());
-        addHbname.setText(hbname);
-        addTiername.setText(tiername);
+        addZahlungsbetrag.setText(String.valueOf(zahlungsbetrag));
+        addHbname.setValue(hbname);
+        addTiername.setValue(tiername);
         addNachname.setText(nachname);
     }
 

@@ -68,14 +68,11 @@
                         <Font name="Raleway Light" size="18.0" />
                     </font>
                 </Text>
-                <TextField fx:id="addHbname" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="85.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
+            <ChoiceBox fx:id="addHbname" prefWidth="400.0">
+               <HBox.margin>
+                  <Insets left="86.0" top="10.0" />
+               </HBox.margin>
+            </ChoiceBox>
             </children>
         </HBox>
         <HBox prefHeight="50.0" prefWidth="200.0">
@@ -88,14 +85,11 @@
                         <Font name="Raleway Light" size="18.0" />
                     </font>
                 </Text>
-                <TextField fx:id="addTiername" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="80.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
+            <ChoiceBox fx:id="addTiername" prefWidth="400.0">
+               <HBox.margin>
+                  <Insets left="80.0" top="10.0" />
+               </HBox.margin>
+            </ChoiceBox>
             </children>
         </HBox>
         <HBox prefHeight="50.0" prefWidth="200.0">

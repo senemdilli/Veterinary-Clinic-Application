@@ -3,11 +3,13 @@ package tierklinik;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -20,7 +22,7 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TextField addTiernachname;
     @FXML
-    private TextField addTierarztname;
+    private ChoiceBox<String> addTierarztname;
     @FXML
     private TextField addAngabe;
     @FXML
@@ -40,11 +42,22 @@ public class AddAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             terminid = TableControllerAppointment.getTerminId();
+            getTierarztname();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @FXML
+    public void getTierarztname() throws SQLException {
+        query = "SELECT name FROM 'person' WHERE id = (SELECT id FROM 'personal' WHERE arbeit = 'Tierarzt')";
+        connection = FullDB.connect();
+        preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            addTierarztname.getItems().add(resultSet.getString("name"));
+        }
+    }
     @FXML
     private void save() {
         try {
@@ -56,7 +69,7 @@ public class AddAppointmentController implements Initializable {
         String tierName = addTiername.getText();
         String tierNachname = addTiernachname.getText();
         String HBname = addHBname.getText();
-        String tierarztName = addTierarztname.getText();
+        String tierarztName = addTierarztname.getValue();
         String angabe = addAngabe.getText();
         String date = addDate.getText();
         String startzeit = addStartzeit.getText();
@@ -65,8 +78,8 @@ public class AddAppointmentController implements Initializable {
         if(tierName.isEmpty() || tierNachname.isEmpty() || HBname.isEmpty() || tierarztName.isEmpty() || angabe.isEmpty() ||
                 date.isEmpty() || startzeit.isEmpty()|| endezeit.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Bitte füllen Sie alle Daten aus.");
+            alert.setTitle("Fehler");
+            alert.setHeaderText("Bitte alle Felder ausfüllen!");
             alert.showAndWait();
         } else {
             getQuery();
@@ -105,7 +118,7 @@ public class AddAppointmentController implements Initializable {
             preparedStatement.setString(4, addAngabe.getText());
             preparedStatement.setString(6, addTiername.getText());
             preparedStatement.setString(7, addTiernachname.getText());
-            preparedStatement.setString(8, addTierarztname.getText());
+            preparedStatement.setString(8, addTierarztname.getValue());
             preparedStatement.setString(9, addHBname.getText());
             preparedStatement.setString(10, "nicht");
             preparedStatement.execute();
@@ -124,7 +137,7 @@ public class AddAppointmentController implements Initializable {
         addTiername.setText(null);
         addAngabe.setText(null);
         addTiernachname.setText(null);
-        addTierarztname.setText(null);
+        addTierarztname.setValue(null);
         addHBname.setText(null);
     }
 
@@ -136,7 +149,7 @@ public class AddAppointmentController implements Initializable {
         addAngabe.setText(angabe);
         addTiername.setText(tiername);
         addTiernachname.setText(tiernachname);
-        addTierarztname.setText(tierarztname);
+        addTierarztname.setValue(tierarztname);
         addHBname.setText(hbname);
     }
 

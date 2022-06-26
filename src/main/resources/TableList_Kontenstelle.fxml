@@ -2,9 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -62,17 +62,20 @@
                 <Insets top="5.0" />
             </padding>
         </HBox>
-        <VBox layoutX="916.0" layoutY="547.0" prefHeight="102.0" prefWidth="374.0">
+        <VBox layoutX="916.0" layoutY="557.0" prefHeight="80.0" prefWidth="380.0">
             <children>
                 <Label fx:id="table_label1" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="40.0" prefWidth="180.0" text="Gesamtbetrag" textFill="#001eff">
                     <font>
                         <Font name="Raleway Medium" size="24.0" />
                     </font>
                     <padding>
-                        <Insets left="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
                     </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                 </Label>
-                <TextArea fx:id="gesamtbetrag" prefHeight="60.0" prefWidth="200.0" />
+            <ListView fx:id="col_gesamtbetrag" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="380.0" style="-fx-font-size: 20; -fx-fixed-cell-size: 48;" />
             </children>
         </VBox>
       <ImageView fx:id="refreshIcon1" fitHeight="40.0" fitWidth="40.0" layoutX="1135.0" layoutY="22.0" onMouseClicked="#makePaid" AnchorPane.topAnchor="22.0">
