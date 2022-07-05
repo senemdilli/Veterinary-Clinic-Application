@@ -1,5 +1,6 @@
 package Classes;
 
+import tierklinik.FullDB;
 import tierklinik.TableControllerKontenstelle;
 
 import java.sql.SQLException;
@@ -12,15 +13,24 @@ public class Zahlung {
     private String tiername;
     private String nachname;
     private String zustand;
-
+    private Integer tierid;
     public Zahlung(String zahlungsart, double zahlungsbetrag, String nachname, String hbname, String tiername) throws SQLException {
-        zahlungid = TableControllerKontenstelle.getZahlungid();
+        zahlungid = FullDB.getZahlungid();
         this.zahlungsart = zahlungsart;
         this.zahlungsbetrag = zahlungsbetrag;
         this.hbname = hbname;
         this.nachname = nachname;
         this.tiername = tiername;
         zustand  = "nicht";
+    }
+    public Zahlung(String zahlungsart, double zahlungsbetrag, String nachname, String hbname, String tiername, Integer zahlungid, String zustand) throws SQLException {
+        zahlungid = FullDB.getZahlungid();
+        this.zahlungsart = zahlungsart;
+        this.zahlungsbetrag = zahlungsbetrag;
+        this.hbname = hbname;
+        this.nachname = nachname;
+        this.tiername = tiername;
+        this.zustand = zustand;
     }
 
     // Setter
@@ -51,6 +61,9 @@ public class Zahlung {
     public void setZustand(String zustand) {
         this.zustand = zustand;
     }
+    public void setTierid(Integer tierid) {
+        this.tierid = tierid;
+    }
 
     // Getter
     public static Integer getZahlungid() {
@@ -79,5 +92,8 @@ public class Zahlung {
 
     public String getZustand() {
         return zustand;
+    }
+    public Integer getTierid() {
+        return tierid;
     }
 }

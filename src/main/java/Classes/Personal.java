@@ -42,4 +42,8 @@ public class Personal extends Person {
     public String getArbeit() {
         return arbeit;
     }
+
+    public Integer getId() {
+        return super.getId();
+    }
 }

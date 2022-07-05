@@ -1,6 +1,6 @@
 package Classes;
 
-import tierklinik.TableControllerAppointment;
+import tierklinik.FullDB;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -15,8 +15,9 @@ public class Termin {
     private static Integer terminid;
     private String angabe;
     private Date date;
-    private Time startzeit;
-    private Time endezeit;
+    private String dateString;
+    private Date startzeit;
+    private Date endezeit;
     private String tiername;
     private String tiernachname;
     private String hbname;
@@ -24,10 +25,16 @@ public class Termin {
     private String zustand = "nicht";
 
     SimpleDateFormat timeformat = new SimpleDateFormat("hh:mm");
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
+    public Termin(String tiername, String tiernachname, String tierarztname) throws SQLException {
+        terminid = FullDB.getTerminId();
+        this.tiername = tiername;
+        this.tiernachname = tiernachname;
+        this.tierarztname = tierarztname;
+    }
     public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname) throws SQLException {
-        terminid = TableControllerAppointment.getTerminId();
+        terminid = FullDB.getTerminId();
         this.angabe = angabe;
         this.tiername = tiername;
         this.tiernachname = tiernachname;
@@ -35,8 +42,8 @@ public class Termin {
         this.tierarztname = tierarztname;
     }
 
-    public Termin(int terminid, String tiername, String hbname, String tiernachname, String tierarzt, String angabe, String date, String startzeit, String endezeit) {
-        this.terminid = terminid;
+    public Termin(int terminid, String tiername, String hbname, String tiernachname, String tierarzt, String angabe, String date, String startzeit, String endezeit) throws SQLException {
+        this.terminid = FullDB.getTerminId();
         this.angabe = angabe;
         this.tiername = tiername;
         this.tiernachname = tiernachname;
@@ -44,8 +51,25 @@ public class Termin {
         this.tierarztname = tierarzt;
         try {
             this.date = dateFormat.parse(date);
-            this.startzeit = Time.valueOf(startzeit);
-            this.endezeit = Time.valueOf(endezeit);
+            this.startzeit = new Time(timeformat.parse(startzeit).getTime());
+            this.endezeit = new Time(timeformat.parse(endezeit).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname, int terminid, String zustand, String date, String startzeit, String endezeit) throws SQLException {
+        this.angabe = angabe;
+        this.tiername = tiername;
+        this.tiernachname = tiernachname;
+        this.hbname = hbname;
+        this.tierarztname = tierarztname;
+        this.terminid = terminid;
+        this.zustand = zustand;
+        try {
+            this.date = dateFormat.parse(date);
+            this.startzeit = new Time(timeformat.parse(startzeit).getTime());
+            this.endezeit = new Time(timeformat.parse(endezeit).getTime());
         } catch (ParseException ex) {
             Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +77,7 @@ public class Termin {
 
     // Setter
     public void setTerminId(int terminid) {
-        this.terminid = terminid;
+        Termin.terminid = terminid;
     }
     public void setAngabe(String angabe) {
         this.angabe = angabe;
@@ -120,11 +144,15 @@ public class Termin {
         return date;
     }
 
-    public Time getStartzeit() {
+    public String getDateString() {
+        return dateString;
+    }
+
+    public Date getStartzeit() {
         return startzeit;
     }
 
-    public Time getEndezeit() {
+    public Date getEndezeit() {
         return endezeit;
     }
 
@@ -150,12 +178,9 @@ public class Termin {
 
     public static boolean controlDate(int terminid) throws SQLException {
         if(terminid == -1) return false;
-        Termin termin = TableControllerAppointment.getTermin(terminid);
+        Termin termin = FullDB.getTermin(terminid);
         Date termindate = termin.getDate();
         Date today = new Date();
-        if(termindate.after(today)) {
-            return true;
-        }
-        return false;
+        return termindate.after(today);
     }
 }

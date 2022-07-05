@@ -1,5 +1,6 @@
 package tierklinik;
 
+import Classes.Termin;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -7,8 +8,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -31,17 +30,13 @@ public class AddAppointmentController implements Initializable {
     private TextField addStartzeit;
     @FXML
     private TextField addEndezeit;
-
-    String query = null;
-    Connection connection = null;
-    PreparedStatement preparedStatement;
     private boolean update;
     int terminid;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            terminid = TableControllerAppointment.getTerminId();
+            terminid = FullDB.getTerminId();
             getTierarztname();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -50,83 +45,31 @@ public class AddAppointmentController implements Initializable {
 
     @FXML
     public void getTierarztname() throws SQLException {
-        query = "SELECT name FROM 'person' WHERE id = (SELECT id FROM 'personal' WHERE arbeit = 'Tierarzt')";
-        connection = FullDB.connect();
-        preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
+        ResultSet resultSet = FullDB.getTierarztname();
         while (resultSet.next()) {
             addTierarztname.getItems().add(resultSet.getString("name"));
         }
     }
     @FXML
-    private void save() {
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        String tierName = addTiername.getText();
-        String tierNachname = addTiernachname.getText();
-        String HBname = addHBname.getText();
-        String tierarztName = addTierarztname.getValue();
-        String angabe = addAngabe.getText();
-        String date = addDate.getText();
-        String startzeit = addStartzeit.getText();
-        String endezeit = addEndezeit.getText();
-
-        if(tierName.isEmpty() || tierNachname.isEmpty() || HBname.isEmpty() || tierarztName.isEmpty() || angabe.isEmpty() ||
-                date.isEmpty() || startzeit.isEmpty()|| endezeit.isEmpty()) {
+    private void save() throws SQLException {
+        if(addTiername.getText().isEmpty() || addTiernachname.getText().isEmpty() || addHBname.getText().isEmpty() || addTierarztname.getValue().isEmpty() || addAngabe.getText().isEmpty() ||
+                addDate.getText().isEmpty() || addStartzeit.getText().isEmpty()|| addEndezeit.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fehler");
             alert.setHeaderText("Bitte alle Felder ausfüllen!");
             alert.showAndWait();
         } else {
-            getQuery();
-            insertTermin();
+            Termin termin = new Termin(addTiername.getText(),addTiernachname.getText(),addTierarztname.getValue());
+            termin.setAngabe(addAngabe.getText());
+            termin.setDate(addDate.getText());
+            termin.setStartzeit(addStartzeit.getText());
+            termin.setEndezeit(addEndezeit.getText());
+            termin.setHbname(addHBname.getText());
+
+            FullDB.getTerminQuery(termin);
+            FullDB.insertTermin(termin);
             clean();
         }
-    }
-
-    private void getQuery() {
-
-        if (!update) {
-            query = "INSERT INTO termin ('date', 'startzeit', 'endezeit', 'angabe', terminid, 'tiername', 'tiernachname', 'tierarztname', 'hbname', 'zustand') VALUES(?,?,?,?,?,?,?,?,?,?)";
-        } else {
-            query = "UPDATE 'termin' SET"
-                    + "'date' =?,"
-                    + "'startzeit' =?,"
-                    + "'endezeit' = ?,"
-                    + "'angabe' =?,"
-                    + "'terminid' =?,"
-                    + "'tiername' =?,"
-                    + "'tiernachname' =?,"
-                    + "'tierarztname' =?,"
-                    + "'hbname' =?,"
-                    + "'zustand' = 'nicht' WHERE terminid ='" + terminid + "'";
-        }
-
-    }
-
-    private void insertTermin() {
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(5, String.valueOf(terminid));
-            preparedStatement.setString(1, addDate.getText());
-            preparedStatement.setString(2, addStartzeit.getText());
-            preparedStatement.setString(3, addEndezeit.getText());
-            preparedStatement.setString(4, addAngabe.getText());
-            preparedStatement.setString(6, addTiername.getText());
-            preparedStatement.setString(7, addTiernachname.getText());
-            preparedStatement.setString(8, addTierarztname.getValue());
-            preparedStatement.setString(9, addHBname.getText());
-            preparedStatement.setString(10, "nicht");
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @FXML

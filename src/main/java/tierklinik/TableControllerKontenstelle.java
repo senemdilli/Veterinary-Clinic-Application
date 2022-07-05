@@ -15,10 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.sql.*;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TableControllerKontenstelle {
     @FXML
@@ -37,31 +34,10 @@ public class TableControllerKontenstelle {
     private TableColumn<Zahlung,Double> col_zahlungsbetrag;
     @FXML
     private ListView<Double> col_gesamtbetrag;
-
-    static String query = null;
-    static Connection connection = null;
-    ResultSet resultSet = null;
-    static ResultSet resultSet3 = null;
-    static PreparedStatement preparedStatement;
     Zahlung zahlung = null;
     int id = 0;
     ObservableList<Zahlung> oblist = FXCollections.observableArrayList();
 
-    public static int getZahlungid() throws SQLException {
-        query = "SELECT * FROM zahlung";
-        int zahlungid = 0;
-        try {
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            resultSet3 = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        while (resultSet3.next()) {
-            zahlungid = resultSet3.getInt("zahlungid");
-        }
-        return zahlungid+1;
-    }
     @FXML
     private void getAddView() {
         try {
@@ -79,49 +55,27 @@ public class TableControllerKontenstelle {
 
     @FXML
     protected void refreshTable() {
-        try {
-            oblist.clear();
-            query = "SELECT * FROM zahlung";
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Zahlung zahlung = new Zahlung(resultSet.getString("zahlungsart"), resultSet.getDouble("zahlungsbetrag"),
-                        resultSet.getString("nachname"), resultSet.getString("hbname"),
-                        resultSet.getString("tiername"));
-                Zahlung.setZahlungid(resultSet.getInt("zahlungid"));
-                zahlung.setZustand(resultSet.getString("zustand"));
-                oblist.add(zahlung);
-            }
-            table.setItems(oblist);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        oblist = FullDB.getZahlungDB();
+        table.setItems(oblist);
     }
 
     @FXML
     private void removeZahlung() {
-        try {
-            zahlung = table.getSelectionModel().getSelectedItem();
-            id = Zahlung.getZahlungid();
-            query = "DELETE FROM 'zahlung' WHERE zahlungid = " + id;
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.execute();
-            refreshTable();
-        } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
-        }
+        zahlung = table.getSelectionModel().getSelectedItem();
+        id = Zahlung.getZahlungid();
+        FullDB.deleteZahlung(id);
+        refreshTable();
+    }
+
+    @FXML
+    private void makePaid() {
+        zahlung = table.getSelectionModel().getSelectedItem();
+        FullDB.makePaid(zahlung);
+        refreshTable();
     }
 
     @FXML
     private void loadDate() {
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         refreshTable();
 
         col_zustand.setCellValueFactory(new PropertyValueFactory<>("zustand"));
@@ -134,35 +88,8 @@ public class TableControllerKontenstelle {
         table.setItems(oblist);
     }
 
-    @FXML
-    private void makePaid() {
-        try {
-            zahlung = table.getSelectionModel().getSelectedItem();
-            id = Zahlung.getZahlungid();
-            query = "UPDATE zahlung SET zustand = 'gezahlt', zahlungsbetrag =  ABS(zahlungsbetrag) WHERE zahlungid = " + id;
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.execute();
-            refreshTable();
-        } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-
-    @FXML
-    private void getTotalAmount() {
-        try {
-            query = "SELECT SUM(zahlungsbetrag) FROM zahlung";
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-            col_gesamtbetrag.setItems(FXCollections.observableArrayList(resultSet.getDouble("SUM(zahlungsbetrag)")));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void initialize() {
         loadDate();
-        getTotalAmount();
+        col_gesamtbetrag.setItems(FXCollections.observableArrayList(FullDB.getTotalAmount()));
     }
 }

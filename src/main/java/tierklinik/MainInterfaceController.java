@@ -108,6 +108,11 @@ public class MainInterfaceController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void getRezepte() {
+
+    }
     @FXML
     private void refreshTermin() {
         try {

@@ -19,11 +19,8 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TableControllerAppointment implements Initializable {
     @FXML
@@ -46,48 +43,8 @@ public class TableControllerAppointment implements Initializable {
     private TableColumn<Termin,String> col_startzeit;
     @FXML
     private TableColumn<Termin,String> col_endezeit;
-
-    static String query = null;
-    static Connection connection = null;
-    ResultSet resultSet = null;
-    static ResultSet resultSet2 = null;
-    static ResultSet resultSet3 = null;
-    static PreparedStatement preparedStatement;
     Termin termin = null;
-    int id = 0;
     ObservableList<Termin> oblist = FXCollections.observableArrayList();
-
-    public static int getTerminId() throws SQLException {
-        query = "SELECT * FROM termin";
-        int terminid = 0;
-        try {
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            resultSet3 = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        while (resultSet3.next()) {
-            terminid = resultSet3.getInt("terminid");
-        }
-        return terminid+1;
-    }
-
-    public static Termin getTermin(int id) throws SQLException {
-        Termin termin = null;
-        query = "SELECT * FROM termin WHERE terminid =" + id;
-        try {
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            resultSet2 = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if(resultSet2.next()) {
-            termin = new Termin(resultSet2.getInt("terminid"), resultSet2.getString("tiername"), resultSet2.getString("hbname"), resultSet2.getString("tiernachname"), resultSet2.getString("tierarzt"), resultSet2.getString("angabe"), resultSet2.getString("date"), resultSet2.getString("startzeit"), resultSet2.getString("endezeit"));
-        }
-        return termin;
-    }
 
     @FXML
     private void getAddView() {
@@ -105,53 +62,27 @@ public class TableControllerAppointment implements Initializable {
     }
 
     @FXML
+    private void makeDone() {
+        termin = table.getSelectionModel().getSelectedItem();
+        FullDB.makeDone();
+        refreshTable();
+    }
+
+
+    @FXML
     protected void refreshTable() {
-        try {
-            oblist.clear();
-            query = "SELECT * FROM termin";
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Termin termin = new Termin(resultSet.getString("angabe"), resultSet.getString("tiername"),
-                        resultSet.getString("tiernachname"), resultSet.getString("hbname"),
-                        resultSet.getString("tierarztname"));
-                termin.setTerminId(resultSet.getInt("terminid"));
-                termin.setZustand(resultSet.getString("zustand"));
-                termin.setDate(resultSet.getString("date"));
-                termin.setStartzeit(resultSet.getString("startzeit"));
-                termin.setEndezeit(resultSet.getString("endezeit"));
-                oblist.add(termin);
-            }
-            table.setItems(oblist);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        oblist = FullDB.getTerminDB();
+        table.setItems(oblist);
     }
 
     @FXML
     private void removeTermin() {
-        try {
-            termin = table.getSelectionModel().getSelectedItem();
-            id = Termin.getTerminid();
-            query = "DELETE FROM 'termin' WHERE terminid = " + id;
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.execute();
-            refreshTable();
-        } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
-        }
+        termin = table.getSelectionModel().getSelectedItem();
+        FullDB.removeTermin(termin);
     }
 
     @FXML
     private void loadDate() {
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         refreshTable();
 
         col_zustand.setCellValueFactory(new PropertyValueFactory<>("zustand"));
@@ -165,21 +96,6 @@ public class TableControllerAppointment implements Initializable {
         col_endezeit.setCellValueFactory(new PropertyValueFactory<>("endezeit"));
 
         table.setItems(oblist);
-    }
-
-    @FXML
-    private void makeDone() {
-        try {
-            termin = table.getSelectionModel().getSelectedItem();
-            id = Termin.getTerminid();
-            query = "UPDATE termin SET zustand = 'erledigt' WHERE terminid = " + id;
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.execute();
-            refreshTable();
-        } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
-        }
     }
 
     @Override

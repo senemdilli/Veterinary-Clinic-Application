@@ -14,7 +14,7 @@
     <children>
         <TableView fx:id="table" layoutX="144.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0" AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="89.0">
             <columns>
-                <TableColumn fx:id="col_zustand" prefWidth="120.0" text="Zustand" />
+                <TableColumn fx:id="col_id" prefWidth="120.0" text="Tier ID" />
                 <TableColumn fx:id="col_tiername" prefWidth="120.0" text="Name" />
                 <TableColumn fx:id="col_nachname" prefWidth="120.0" text="Nachname" />
                 <TableColumn fx:id="col_telnum" prefWidth="120.0" text="Telefonnummer" />

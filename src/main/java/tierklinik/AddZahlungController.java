@@ -1,10 +1,14 @@
 package tierklinik;
 
+import Classes.Person;
+import Classes.Tier;
+import Classes.Zahlung;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -16,135 +20,117 @@ import java.util.ResourceBundle;
 public class AddZahlungController implements Initializable {
 
     @FXML
+    private TableView<Tier> zahlungTable;
+    @FXML
+    private TableColumn<Tier, Integer> col_tierid;
+    @FXML
+    private TableColumn<Person,String> col_tiername;
+    @FXML
+    private TableColumn<Tier,String> col_hbname;
+    @FXML
+    private TableColumn<Person,String> col_nachname;
+    @FXML
     private ChoiceBox<String> addZahlungsart;
     @FXML
     private TextField addZahlungsbetrag;
     @FXML
-    private ChoiceBox<String> addHbname;
+    private ChoiceBox<Integer> addTierid;
     @FXML
-    private ChoiceBox<String> addTiername;
+    private TextField addHbname;
+    @FXML
+    private TextField addTiername;
     @FXML
     private TextField addNachname;
 
     private final String[] zahlungsarten = {"Bar", "Kreditkarte", "Anweisung"};
-
-    String query = null;
+    ObservableList<Tier> oblist = FXCollections.observableArrayList();
     Connection connection = null;
-    PreparedStatement preparedStatement;
     private boolean update;
     int zahlungid;
+
+    String tiername;
+    String nachname;
+    String hbname;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            zahlungid = TableControllerKontenstelle.getZahlungid();
-            getHbname();
-            getTiername();
+            //connection = FullDB.connect();
+            zahlungid = FullDB.getZahlungid();
+            loadData();
+            getTierid();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         addZahlungsart.getItems().addAll(zahlungsarten);
     }
 
-    @FXML
-    public void getHbname() throws SQLException {
-        query = "SELECT hbname FROM 'tier'";
-        connection = FullDB.connect();
-        preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
+    private void getTier() throws SQLException {
+        ResultSet resultSet = FullDB.getTier();
         while (resultSet.next()) {
-            addHbname.getItems().add(resultSet.getString("hbname"));
+            tiername = resultSet.getString("name");
+            hbname = resultSet.getString("hbname");
+            nachname = resultSet.getString("nachname");
         }
     }
 
     @FXML
-    public void getTiername() throws SQLException {
-        query = "SELECT name FROM 'person' WHERE id = (SELECT tierid FROM 'tier' WHERE hbname =" + addHbname.getValue() + ")";
-        connection = FullDB.connect();
-        preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            addTiername.getItems().add(resultSet.getString("name"));
-        }
+    private void refreshTable() {
+        oblist = FullDB.getTierDB();
+        zahlungTable.setItems(oblist);
     }
 
     @FXML
-    private void save() {
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void loadData() {
+        refreshTable();
+
+        col_tierid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        col_tiername.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
+        col_hbname.setCellValueFactory(new PropertyValueFactory<>("hbname"));
+
+        zahlungTable.setItems(oblist);
+    }
+
+    @FXML
+    public void getTierid() throws SQLException {
+        ResultSet resultSet = FullDB.getTierid();
+        while (resultSet.next()) {
+            addTierid.getItems().add(resultSet.getInt("tierid"));
         }
+    }
+    @FXML
+    private void save() throws SQLException {
 
-        String tiername = addTiername.getValue();
-        String nachname = addNachname.getText();
-        String hbname = addHbname.getValue();
-        String zahlungsart = addZahlungsart.getValue();
-        String zahlungsbetrag = addZahlungsbetrag.getText();
-
-        if(tiername.isEmpty() || nachname.isEmpty() || hbname.isEmpty() || zahlungsart.isEmpty() || zahlungsbetrag.isEmpty()) {
+        if(addZahlungsbetrag.getText().isEmpty() || addZahlungsart.getValue().isEmpty() || addTierid.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fehler");
             alert.setHeaderText("Bitte alle Felder ausfüllen!");
             alert.showAndWait();
         } else {
-            getQuery();
-            insertZahlung();
+            Zahlung zahlung = new Zahlung(addZahlungsart.getValue(), Double.parseDouble(addZahlungsbetrag.getText()), addNachname.getText(), addHbname.getText(), addTiername.getText());
+            FullDB.getZahlungQuery(zahlungid);
+            FullDB.insertZahlung(zahlung);
             clean();
         }
-    }
-
-    private void getQuery() {
-
-        if (!update) {
-            query = "INSERT INTO zahlung ('zahlungsart', 'zahlungsbetrag', 'hbname', 'tiername', 'nachname', 'zustand', 'zahlungid') VALUES(?,?,?,?,?,?,?)";
-        } else {
-            query = "UPDATE 'zahlung' SET"
-                    + "'zahlungsart' =?,"
-                    + "'zahlungsbetrag' =?,"
-                    + "'hbname' = ?,"
-                    + "'tiername' =?,"
-                    + "'nachname' =?,"
-                    + "'zustand' =?"
-                    + "'zahlungid' =? WHERE zahlungid ='" + zahlungid + "'";
-        }
-
-    }
-
-    private void insertZahlung() {
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(7, String.valueOf(zahlungid));
-            preparedStatement.setString(1, addZahlungsart.getValue());
-            preparedStatement.setString(2, addZahlungsbetrag.getText());
-            preparedStatement.setString(3, addHbname.getValue());
-            preparedStatement.setString(4, addTiername.getValue());
-            preparedStatement.setString(5, addNachname.getText());
-            preparedStatement.setString(6, "nicht");
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @FXML
     private void clean() {
         addZahlungsart.setValue(null);
         addZahlungsbetrag.setText(null);
-        addHbname.setValue(null);
+        /* addHbname.setValue(null);
         addTiername.setValue(null);
-        addNachname.setText(null);
+        addNachname.setText(null); */
     }
 
     void setTextField(int zahlungid, String zahlungsart, Double zahlungsbetrag, String hbname, String tiername, String nachname) {
         this.zahlungid = zahlungid;
         addZahlungsart.setValue(zahlungsart);
         addZahlungsbetrag.setText(String.valueOf(zahlungsbetrag));
-        addHbname.setValue(hbname);
+        /* addHbname.setValue(hbname);
         addTiername.setValue(tiername);
-        addNachname.setText(nachname);
+        addNachname.setText(nachname); */
     }
 
     void setUpdate(boolean b) {

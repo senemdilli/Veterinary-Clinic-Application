@@ -11,6 +11,9 @@ public class Tier extends Person {
     private String hbname;
     private Double kontostand;
 
+    public Tier(Integer id, String name, String nachname) {
+        super(id,name,nachname);
+    }
     public Tier(Integer tierid, String name, String nachname, Integer telefonnummer, String email, String adresse, String hbname, Integer hbid, Double kontostand) {
         super(tierid, name, nachname, telefonnummer, email, adresse);
         this.hbname = hbname;
@@ -82,5 +85,8 @@ public class Tier extends Person {
 
     public Integer getHbid() {
         return hbid;
+    }
+    public Integer getId() {
+        return tierid;
     }
 }

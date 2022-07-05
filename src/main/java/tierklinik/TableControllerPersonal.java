@@ -4,30 +4,21 @@ import Classes.Person;
 import Classes.Personal;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class TableControllerPersonal implements Initializable {
     @FXML
     private TableView<Personal> table;
@@ -50,20 +41,13 @@ public class TableControllerPersonal implements Initializable {
     @FXML
     private TableColumn<Personal,Integer> col_personalnummer;
 
-    String query = null;
-    String query2 = null;
-    Connection connection = null;
-    ResultSet resultSet = null;
-    PreparedStatement preparedStatement;
     Personal personal = null;
-    Person person = null;
-    int id = 0;
     ObservableList<Personal> oblist = FXCollections.observableArrayList();
 
     @FXML
     private void getAddView() {
         try {
-            Parent parent = FXMLLoader.load(Main.class.getResource("/addPersonal.fxml"));
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/addPersonal.fxml")));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -77,52 +61,18 @@ public class TableControllerPersonal implements Initializable {
 
     @FXML
     private void refreshTable() {
-        try {
-            oblist.clear();
-            query = "SELECT * FROM person INNER JOIN personal WHERE person.id = personal.id";
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                oblist.add(new Personal(resultSet.getInt("id"), resultSet.getString("name"),
-                        resultSet.getString("nachname"), resultSet.getInt("telefonnummer"),
-                        resultSet.getString("email"), resultSet.getString("adresse"),
-                        resultSet.getString("arbeit"), resultSet.getInt("personalnummer"),
-                        resultSet.getDouble("gehalt")));
-            }
-            table.setItems(oblist);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        oblist = FullDB.getPersonalDB();
+        table.setItems(oblist);
     }
 
     @FXML
-    private void deletePersonal(MouseEvent event) {
-        try {
-            personal = table.getSelectionModel().getSelectedItem();
-            person = table.getSelectionModel().getSelectedItem();
-            id = personal.getId();
-            query = "DELETE FROM 'personal' WHERE id = " + id;
-            query2 = "DELETE FROM 'person' WHERE id = " + id;
-            connection = FullDB.connect();
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.execute();
-            preparedStatement = connection.prepareStatement(query2);
-            preparedStatement.execute();
-            refreshTable();
-        } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
-        }
+    private void deletePersonal() {
+        personal = table.getSelectionModel().getSelectedItem();
+        FullDB.deletePersonal(personal);
     }
 
     @FXML
     private void loadDate() {
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         refreshTable();
 
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));

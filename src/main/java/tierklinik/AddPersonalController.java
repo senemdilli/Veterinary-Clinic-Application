@@ -1,14 +1,12 @@
 package tierklinik;
 
+import Classes.Personal;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddPersonalController implements Initializable {
@@ -31,13 +29,7 @@ public class AddPersonalController implements Initializable {
     private TextField addPnummer;
     @FXML
     private TextField addGehalt;
-
-    String query = null;
-    String query2 = null;
-    Connection connection = null;
-    PreparedStatement preparedStatement;
     private boolean update;
-    int id;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -46,36 +38,28 @@ public class AddPersonalController implements Initializable {
 
     @FXML
     private void save() {
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        int id = Integer.parseInt(addId.getText());
-        String name = addName.getText();
-        String nachname = addNachname.getText();
-        int telefonnummer = Integer.parseInt(addTel.getText());
-        String email = addEmail.getText();
-        String adresse = addAdresse.getText();
-        String arbeit = addArbeit.getText();
-        int personalnummer = Integer.parseInt(addPnummer.getText());
-        double gehalt = Double.parseDouble(addGehalt.getText());
-
-        if(name.isEmpty() || nachname.isEmpty() || Integer.toString(telefonnummer).isEmpty() || email.isEmpty() || adresse.isEmpty() ||
-        arbeit.isEmpty() || Integer.toString(personalnummer).isEmpty()|| Double.toString(gehalt).isEmpty()) {
+        if(addId.getText().isEmpty() || addNachname.getText().isEmpty() || addTel.getText().isEmpty() || addEmail.getText().isEmpty() || addAdresse.getText().isEmpty() ||
+        addArbeit.getText().isEmpty() || addPnummer.getText().isEmpty()|| addGehalt.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Bitte füllen Sie alle Daten aus.");
             alert.showAndWait();
         } else {
-            getQuery();
-            insertPerson();
-            insertPersonal();
+            Personal personal = new Personal(Integer.parseInt(addId.getText()),addName.getText(), addNachname.getText());
+            personal.setTelefonnummer(Integer.parseInt(addTel.getText()));
+            personal.setEmail(addEmail.getText());
+            personal.setAdresse(addAdresse.getText());
+            personal.setArbeit(addArbeit.getText());
+            personal.setPersonalnummer(Integer.parseInt(addPnummer.getText()));
+            personal.setGehalt(Double.parseDouble(addGehalt.getText()));
+
+            FullDB.getPersonalQuery(personal);
+            FullDB.insertPerson(personal);
+            FullDB.insertPersonal(personal);
             clean();
         }
     }
-
+ /*
     private void getQuery() {
 
         if (!update) {
@@ -96,40 +80,16 @@ public class AddPersonalController implements Initializable {
                     + "'arbeit' =? WHERE id = '" + id + "'";
         }
 
-    }
+    } */
+/*
 
     private void insertPerson() {
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(3, String.valueOf(addId.getText()));
-            preparedStatement.setString(1, addName.getText());
-            preparedStatement.setString(2, addNachname.getText());
-            preparedStatement.setString(5, String.valueOf(addTel.getText()));
-            preparedStatement.setString(6, addEmail.getText());
-            preparedStatement.setString(4, addAdresse.getText());
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        FullDB.insertPerson(personal);
     }
 
     private void insertPersonal() {
-
-        try {
-            preparedStatement = connection.prepareStatement(query2);
-            preparedStatement.setString(1, String.valueOf(addId.getText()));
-            preparedStatement.setString(4, addArbeit.getText());
-            preparedStatement.setString(2, String.valueOf(addPnummer.getText()));
-            preparedStatement.setString(3, String.valueOf(addGehalt.getText()));
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
+        FullDB.insertPersonal(personal);
+    } */
 
     @FXML
     private void clean() {

@@ -1,6 +1,7 @@
 package tierklinik;
 
 import Classes.Personal;
+import Classes.Tier;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -50,90 +51,26 @@ public class AddTierController implements Initializable {
     }
 
     @FXML
-    private void save(MouseEvent event) {
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        int id = Integer.parseInt(addTierId.getText());
-        String name = addTierName.getText();
-        String nachname = addNachname.getText();
-        int telefonnummer = Integer.parseInt(addTel.getText());
-        String email = addEmail.getText();
-        String adresse = addAdresse.getText();
-        String hbname = addHBName.getText();
-        int hbid = Integer.parseInt(addHBId.getText());
-        double kontostand = Double.parseDouble(addKontostand.getText());
-
-        if(name.isEmpty() || nachname.isEmpty() || Integer.toString(telefonnummer).isEmpty() || email.isEmpty() || adresse.isEmpty() ||
-                hbname.isEmpty() || Integer.toString(hbid).isEmpty()|| Double.toString(kontostand).isEmpty()) {
+    private void save() {
+        if(addTierName.getText().isEmpty() || addNachname.getText().isEmpty() || addTel.getText().isEmpty() || addEmail.getText().isEmpty() || addAdresse.getText().isEmpty() ||
+                addHBName.getText().isEmpty() || addHBId.getText().isEmpty()|| addKontostand.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Bitte füllen Sie alle Daten aus.");
             alert.showAndWait();
         } else {
-            getQuery();
-            insertPerson();
-            insertTier();
+            Tier tier = new Tier(Integer.parseInt(addTierId.getText()),addTierName.getText(), addNachname.getText());
+            tier.setTelefonnummer(Integer.parseInt(addTel.getText()));
+            tier.setEmail(addEmail.getText());
+            tier.setAdresse(addAdresse.getText());
+            tier.setHbName(addHBName.getText());
+            tier.setHBId(Integer.parseInt(addHBId.getText()));
+            tier.setKontostand(Double.parseDouble(addKontostand.getText()));
+
+            FullDB.getTierQuery(tier);
+            FullDB.insertTier(tier);
             clean();
         }
-    }
-
-    private void getQuery() {
-
-        if (!update) {
-            query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?,?)";
-            query2 = "INSERT INTO tier ( tierid, 'hbname', hbid, kontostand) VALUES(?,?,?,?)";
-        } else {
-            query = "UPDATE 'person' SET"
-                    + "'name' =?,"
-                    + "'nachname' =?,"
-                    + "'id' = ?,"
-                    + "'adresse' =?,"
-                    + "'telefonnummer' =?,"
-                    + "'email' =? WHERE id ='" + id + "'";
-            query2 = "UPDATE 'tier' SET"
-                    + "'tierid' = ?,"
-                    + "'hbname' =?,"
-                    + "'hbid' =?,"
-                    + "'kontostand' =? WHERE id = '" + tierid + "'";
-        }
-
-    }
-
-    private void insertPerson() {
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(3, String.valueOf(addTierId.getText()));
-            preparedStatement.setString(1, addTierName.getText());
-            preparedStatement.setString(2, addNachname.getText());
-            preparedStatement.setString(5, String.valueOf(addTel.getText()));
-            preparedStatement.setString(6, addEmail.getText());
-            preparedStatement.setString(4, addAdresse.getText());
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void insertTier() {
-
-        try {
-            preparedStatement = connection.prepareStatement(query2);
-            preparedStatement.setString(1, String.valueOf(addTierId.getText()));
-            preparedStatement.setString(2, addHBName.getText());
-            preparedStatement.setString(3, String.valueOf(addHBId.getText()));
-            preparedStatement.setString(4, String.valueOf(addKontostand.getText()));
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @FXML
