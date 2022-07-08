@@ -43,7 +43,7 @@
                 </ImageView>
                 <ImageView fx:id="removeIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#removeZahlung">
                     <image>
-                        <Image url="@png/payment_delete.png" />
+                        <Image url="@png/remove.png" />
                     </image>
                     <HBox.margin>
                         <Insets bottom="20.0" left="10.0" right="20.0" top="20.0" />

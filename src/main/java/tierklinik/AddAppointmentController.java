@@ -10,16 +10,14 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
 
     @FXML
-    private TextField addTiername;
-    @FXML
-    private TextField addHBname;
-    @FXML
-    private TextField addTiernachname;
+    private ChoiceBox<String> addTier;
     @FXML
     private ChoiceBox<String> addTierarztname;
     @FXML
@@ -32,14 +30,24 @@ public class AddAppointmentController implements Initializable {
     private TextField addEndezeit;
     private boolean update;
     int terminid;
+    int tierid;
+    String tiername, nachname, hbname;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             terminid = FullDB.getTerminId();
             getTierarztname();
+            getTierinfo();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void getTierinfo() throws SQLException {
+        ResultSet resultSet = FullDB.getTierinfo();
+        while (resultSet.next()) {
+            addTier.getItems().add(resultSet.getString("hbname") + " | " + resultSet.getString("name") + " | " + resultSet.getString("nachname"));
         }
     }
 
@@ -51,20 +59,21 @@ public class AddAppointmentController implements Initializable {
         }
     }
     @FXML
-    private void save() throws SQLException {
-        if(addTiername.getText().isEmpty() || addTiernachname.getText().isEmpty() || addHBname.getText().isEmpty() || addTierarztname.getValue().isEmpty() || addAngabe.getText().isEmpty() ||
-                addDate.getText().isEmpty() || addStartzeit.getText().isEmpty()|| addEndezeit.getText().isEmpty()) {
+    private void save() throws SQLException{
+        if(addTierarztname.getValue().isEmpty() || addAngabe.getText().isEmpty() || addDate.getText().isEmpty() ||
+                addStartzeit.getText().isEmpty()|| addEndezeit.getText().isEmpty() || addTier.getValue().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fehler");
             alert.setHeaderText("Bitte alle Felder ausfüllen!");
             alert.showAndWait();
         } else {
-            Termin termin = new Termin(addTiername.getText(),addTiernachname.getText(),addTierarztname.getValue());
+            String[] tierinfo = addTier.getValue().split("\\|");
+            Termin termin = new Termin(tierinfo[1],tierinfo[2],addTierarztname.getValue());
             termin.setAngabe(addAngabe.getText());
             termin.setDate(addDate.getText());
             termin.setStartzeit(addStartzeit.getText());
             termin.setEndezeit(addEndezeit.getText());
-            termin.setHbname(addHBname.getText());
+            termin.setHbname(tierinfo[0]);
 
             FullDB.getTerminQuery(termin);
             FullDB.insertTermin(termin);
@@ -77,23 +86,9 @@ public class AddAppointmentController implements Initializable {
         addDate.setText(null);
         addStartzeit.setText(null);
         addEndezeit.setText(null);
-        addTiername.setText(null);
         addAngabe.setText(null);
-        addTiernachname.setText(null);
         addTierarztname.setValue(null);
-        addHBname.setText(null);
-    }
-
-    void setTextField(int terminid, String date, String startzeit, String endezeit, String angabe, String tiername, String tiernachname, String tierarztname, String hbname) {
-        this.terminid = terminid;
-        addDate.setText(date);
-        addStartzeit.setText(startzeit);
-        addEndezeit.setText(endezeit);
-        addAngabe.setText(angabe);
-        addTiername.setText(tiername);
-        addTiernachname.setText(tiernachname);
-        addTierarztname.setValue(tierarztname);
-        addHBname.setText(hbname);
+        addTier.setValue(null);
     }
 
     void setUpdate(boolean b) {

@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class TableControllerKontenstelle {
@@ -23,11 +24,11 @@ public class TableControllerKontenstelle {
     @FXML
     private TableColumn<Zahlung,Integer> col_zustand;
     @FXML
-    private TableColumn<Person,String> col_tiername;
+    private TableColumn<Person, String> col_tiername;
     @FXML
-    private TableColumn<Person,String> col_hbname;
+    private TableColumn<Tier, String> col_hbname;
     @FXML
-    private TableColumn<Person,String> col_nachname;
+    private TableColumn<Person, String> col_nachname;
     @FXML
     private TableColumn<Zahlung,String> col_zahlungsart;
     @FXML
@@ -75,11 +76,11 @@ public class TableControllerKontenstelle {
     }
 
     @FXML
-    private void loadDate() {
+    private void loadDate(){
         refreshTable();
 
         col_zustand.setCellValueFactory(new PropertyValueFactory<>("zustand"));
-        col_tiername.setCellValueFactory(new PropertyValueFactory<>("tiername"));
+        col_tiername.setCellValueFactory(new PropertyValueFactory<>("name"));
         col_hbname.setCellValueFactory(new PropertyValueFactory<>("hbname"));
         col_nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
         col_zahlungsart.setCellValueFactory(new PropertyValueFactory<>("zahlungsart"));
@@ -88,7 +89,7 @@ public class TableControllerKontenstelle {
         table.setItems(oblist);
     }
 
-    public void initialize() {
+    public void initialize() throws SQLException {
         loadDate();
         col_gesamtbetrag.setItems(FXCollections.observableArrayList(FullDB.getTotalAmount()));
     }

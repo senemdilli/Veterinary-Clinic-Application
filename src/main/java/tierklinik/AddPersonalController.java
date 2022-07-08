@@ -4,6 +4,7 @@ import Classes.Personal;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -24,22 +25,24 @@ public class AddPersonalController implements Initializable {
     @FXML
     private TextField addAdresse;
     @FXML
-    private TextField addArbeit;
+    private ChoiceBox<String> addArbeit;
     @FXML
     private TextField addPnummer;
     @FXML
     private TextField addGehalt;
+
+    private final String[] arbeiten = {"Sekretär", "Tierarzt", "Anderen"};
     private boolean update;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        addArbeit.getItems().addAll(arbeiten);
     }
 
     @FXML
     private void save() {
         if(addId.getText().isEmpty() || addNachname.getText().isEmpty() || addTel.getText().isEmpty() || addEmail.getText().isEmpty() || addAdresse.getText().isEmpty() ||
-        addArbeit.getText().isEmpty() || addPnummer.getText().isEmpty()|| addGehalt.getText().isEmpty()) {
+        addArbeit.getValue().isEmpty() || addPnummer.getText().isEmpty()|| addGehalt.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Bitte füllen Sie alle Daten aus.");
@@ -49,7 +52,7 @@ public class AddPersonalController implements Initializable {
             personal.setTelefonnummer(Integer.parseInt(addTel.getText()));
             personal.setEmail(addEmail.getText());
             personal.setAdresse(addAdresse.getText());
-            personal.setArbeit(addArbeit.getText());
+            personal.setArbeit(addArbeit.getValue());
             personal.setPersonalnummer(Integer.parseInt(addPnummer.getText()));
             personal.setGehalt(Double.parseDouble(addGehalt.getText()));
 
@@ -59,38 +62,6 @@ public class AddPersonalController implements Initializable {
             clean();
         }
     }
- /*
-    private void getQuery() {
-
-        if (!update) {
-            query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?,?)";
-            query2 = "INSERT INTO personal ( id, personalnummer, gehalt, 'arbeit') VALUES(?,?,?,?)";
-        } else {
-            query = "UPDATE 'person' SET"
-                    + "'name' =?,"
-                    + "'nachname' =?,"
-                    + "'id' = ?,"
-                    + "'adresse' =?,"
-                    + "'telefonnummer' =?,"
-                    + "'email' =? WHERE id ='" + id + "'";
-            query2 = "UPDATE 'personal' SET"
-                    + "'id' = ?,"
-                    + "'personalnummer' =?,"
-                    + "'gehalt' =?,"
-                    + "'arbeit' =? WHERE id = '" + id + "'";
-        }
-
-    } */
-/*
-
-    private void insertPerson() {
-        FullDB.insertPerson(personal);
-    }
-
-    private void insertPersonal() {
-        FullDB.insertPersonal(personal);
-    } */
-
     @FXML
     private void clean() {
         addId.setText(null);
@@ -99,7 +70,7 @@ public class AddPersonalController implements Initializable {
         addAdresse.setText(null);
         addTel.setText(null);
         addPnummer.setText(null);
-        addArbeit.setText(null);
+        addArbeit.setValue(null);
         addEmail.setText(null);
         addGehalt.setText(null);
     }
@@ -111,7 +82,7 @@ public class AddPersonalController implements Initializable {
         addAdresse.setText(adresse);
         addTel.setText(String.valueOf(telefonnummer));
         addPnummer.setText(String.valueOf(personalnummer));
-        addArbeit.setText(arbeit);
+        addArbeit.setValue(arbeit);
         addEmail.setText(email);
         addGehalt.setText(String.valueOf(gehalt));
     }

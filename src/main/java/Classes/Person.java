@@ -10,6 +10,7 @@ public class Person {
     private String email;
 
     public Person(Integer id, String name, String nachname) {
+        this.id = id;
         this.name = name;
         this.nachname = nachname;
     }

@@ -43,7 +43,6 @@ public class AddTierController implements Initializable {
     PreparedStatement preparedStatement;
     Personal personal = null;
     private boolean update;
-    int id, tierid;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -63,8 +62,8 @@ public class AddTierController implements Initializable {
             tier.setTelefonnummer(Integer.parseInt(addTel.getText()));
             tier.setEmail(addEmail.getText());
             tier.setAdresse(addAdresse.getText());
-            tier.setHbName(addHBName.getText());
-            tier.setHBId(Integer.parseInt(addHBId.getText()));
+            tier.setHbname(addHBName.getText());
+            tier.setHBid(Integer.parseInt(addHBId.getText()));
             tier.setKontostand(Double.parseDouble(addKontostand.getText()));
 
             FullDB.getTierQuery(tier);

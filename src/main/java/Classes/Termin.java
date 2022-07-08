@@ -3,29 +3,24 @@ package Classes;
 import tierklinik.FullDB;
 
 import java.sql.SQLException;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class Termin {
 
     private static Integer terminid;
     private String angabe;
-    private Date date;
-    private String dateString;
-    private Date startzeit;
-    private Date endezeit;
+    private LocalDate date;
+    private String startzeit;
+    private String endezeit;
     private String tiername;
     private String tiernachname;
     private String hbname;
     private String tierarztname;
     private String zustand = "nicht";
-
-    SimpleDateFormat timeformat = new SimpleDateFormat("hh:mm");
-    static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ENGLISH);
+    static DateTimeFormatter dateFormat2 = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
 
     public Termin(String tiername, String tiernachname, String tierarztname) throws SQLException {
         terminid = FullDB.getTerminId();
@@ -49,13 +44,9 @@ public class Termin {
         this.tiernachname = tiernachname;
         this.hbname = hbname;
         this.tierarztname = tierarzt;
-        try {
-            this.date = dateFormat.parse(date);
-            this.startzeit = new Time(timeformat.parse(startzeit).getTime());
-            this.endezeit = new Time(timeformat.parse(endezeit).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.date = LocalDate.parse(date, dateFormat);
+        this.startzeit = startzeit;
+        this.endezeit = startzeit;
     }
 
     public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname, int terminid, String zustand, String date, String startzeit, String endezeit) throws SQLException {
@@ -66,13 +57,9 @@ public class Termin {
         this.tierarztname = tierarztname;
         this.terminid = terminid;
         this.zustand = zustand;
-        try {
-            this.date = dateFormat.parse(date);
-            this.startzeit = new Time(timeformat.parse(startzeit).getTime());
-            this.endezeit = new Time(timeformat.parse(endezeit).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.date = LocalDate.parse(date, dateFormat);
+        this.startzeit = startzeit;
+        this.endezeit = startzeit;
     }
 
     // Setter
@@ -83,32 +70,16 @@ public class Termin {
         this.angabe = angabe;
     }
 
-    public void setDate(String date) {
-        try {
-            this.date = dateFormat.parse(date);
-        } catch (ParseException ex) {
-            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void setDate(String date){
+        this.date = LocalDate.parse(date, dateFormat);
     }
 
     public void setStartzeit(String gegebenstartzeit) {
-        Time start;
-        try {
-            start = new Time(timeformat.parse(gegebenstartzeit).getTime());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        startzeit = start;
+        startzeit = gegebenstartzeit;
     }
 
     public void setEndezeit(String gegebenendezeit) {
-        Time ende;
-        try {
-            ende = new Time(timeformat.parse(gegebenendezeit).getTime());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        endezeit = ende;
+        endezeit = gegebenendezeit;
     }
 
     public void setTiername(String tiername) {
@@ -140,19 +111,15 @@ public class Termin {
         return angabe;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public String getDateString() {
-        return dateString;
-    }
-
-    public Date getStartzeit() {
+    public String getStartzeit() {
         return startzeit;
     }
 
-    public Date getEndezeit() {
+    public String getEndezeit() {
         return endezeit;
     }
 
@@ -179,8 +146,8 @@ public class Termin {
     public static boolean controlDate(int terminid) throws SQLException {
         if(terminid == -1) return false;
         Termin termin = FullDB.getTermin(terminid);
-        Date termindate = termin.getDate();
-        Date today = new Date();
-        return termindate.after(today);
+        LocalDate termindate = termin.getDate();
+        LocalDate today = LocalDate.now();
+        return termindate.isAfter(today);
     }
 }

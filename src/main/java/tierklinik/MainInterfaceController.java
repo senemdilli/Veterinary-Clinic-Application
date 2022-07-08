@@ -20,21 +20,12 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainInterfaceController implements Initializable {
-
-    Connection connection = null;
-    ResultSet resultSet = null;
-    PreparedStatement preparedStatement;
-
     @FXML
     private TableView<Termin> terminTable;
     @FXML
@@ -49,8 +40,6 @@ public class MainInterfaceController implements Initializable {
     private TableColumn<Termin,String> col_angabe;
     @FXML
     private TableColumn<Termin,String> col_startzeit;
-
-    String query = null;
     ObservableList<Termin> oblist = FXCollections.observableArrayList();
 
     @FXML
@@ -110,40 +99,27 @@ public class MainInterfaceController implements Initializable {
     }
 
     @FXML
-    private void getRezepte() {
-
-    }
-    @FXML
-    private void refreshTermin() {
+    private void getRezepteView() {
         try {
-            oblist.clear();
-            query = "SELECT * FROM termin";
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Termin termin = new Termin(resultSet.getString("angabe"), resultSet.getString("tiername"),
-                        resultSet.getString("tiernachname"), resultSet.getString("hbname"),
-                        resultSet.getString("tierarztname"));
-                termin.setDate(resultSet.getString("date"));
-                termin.setStartzeit(resultSet.getString("startzeit"));
-                termin.setEndezeit(resultSet.getString("endezeit"));
-                oblist.add(termin);
-            }
-            terminTable.setItems(oblist);
-
-        } catch (SQLException e) {
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/TableList_Rezepte.fxml")));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @FXML
+    private void refreshTermin() {
+        oblist = FullDB.getTerminDB();
+        terminTable.setItems(oblist);
     }
     @FXML
     private void loadDate() {
-
-        try {
-            connection = FullDB.connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         refreshTermin();
 
         col_tiername.setCellValueFactory(new PropertyValueFactory<>("tiername"));

@@ -5,8 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FullDB {
     public  static Connection con = null;
@@ -33,11 +31,20 @@ public class FullDB {
         }
     }
 
+    public static void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Personal SQL Operationen
     // ADD Personal
     protected static void getPersonalQuery(Personal personal) {
         setConnection();
         id = personal.getId();
+        System.out.println(id);
         if (!update) {
             query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?,?)";
             query2 = "INSERT INTO personal ( id, personalnummer, gehalt, 'arbeit') VALUES(?,?,?,?)";
@@ -121,7 +128,7 @@ public class FullDB {
             preparedStatement = connection.prepareStatement(query2);
             preparedStatement.execute();
         } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -129,10 +136,10 @@ public class FullDB {
     // ADD Tier
     protected static void getTierQuery(Tier tier) {
         setConnection();
-        id = tier.getId();
+        id = tier.getTierid();
         if (!update) {
             query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?,?)";
-            query2 = "INSERT INTO tier ( tierid, 'hbname', hbid, kontostand) VALUES(?,?,?,?)";
+            query2 = "INSERT INTO tier (tierid, 'hbname', hbid, kontostand) VALUES(?,?,?,?)";
         } else {
             query = "UPDATE 'person' SET"
                     + "'name' =?,"
@@ -143,9 +150,9 @@ public class FullDB {
                     + "'email' =? WHERE id ='" + id + "'";
             query2 = "UPDATE 'tier' SET"
                     + "'tierid' = ?,"
-                    + "'hbname' =?,"
-                    + "'hbid' =?,"
-                    + "'kontostand' =? WHERE tierid = '" + id + "'";
+                    + "'hbname' = ?,"
+                    + "'hbid' = ?,"
+                    + "'kontostand' = ? WHERE tierid = '" + id + "'";
         }
 
     }
@@ -153,16 +160,16 @@ public class FullDB {
         getTierQuery(tier);
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(3, String.valueOf(tier.getId()));
             preparedStatement.setString(1, tier.getName());
             preparedStatement.setString(2, tier.getNachname());
+            preparedStatement.setString(3, String.valueOf(tier.getId()));
+            preparedStatement.setString(4, tier.getAdresse());
             preparedStatement.setString(5, String.valueOf(tier.getTelefonnummer()));
             preparedStatement.setString(6, tier.getEmail());
-            preparedStatement.setString(4, tier.getAdresse());
             preparedStatement.execute();
             preparedStatement = connection.prepareStatement(query2);
             preparedStatement.setString(1, String.valueOf(tier.getId()));
-            preparedStatement.setString(2, tier.getHbName());
+            preparedStatement.setString(2, tier.getHbname());
             preparedStatement.setString(3, String.valueOf(tier.getHbid()));
             preparedStatement.setString(4, String.valueOf(tier.getKontostand()));
             preparedStatement.execute();
@@ -178,16 +185,17 @@ public class FullDB {
         ObservableList<Tier> oblist = FXCollections.observableArrayList();
         try {
             oblist.clear();
-            query = "SELECT * FROM person INNER JOIN tier WHERE person.id = tier.tierid";
+            query = "SELECT * FROM tier INNER JOIN person ON person.id = tier.tierid";
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                oblist.add(new Tier(resultSet.getInt("id"), resultSet.getString("name"),
+                Tier tier = new Tier(resultSet.getInt("tierid"), resultSet.getString("name"),
                         resultSet.getString("nachname"), resultSet.getInt("telefonnummer"),
                         resultSet.getString("email"), resultSet.getString("adresse"),
                         resultSet.getString("hbname"), resultSet.getInt("hbid"),
-                        resultSet.getDouble("kontostand")));
+                        resultSet.getDouble("kontostand"));
+                oblist.add(tier);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -204,14 +212,14 @@ public class FullDB {
             preparedStatement = connection.prepareStatement(query2);
             preparedStatement.execute();
         } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
+            throw new RuntimeException(e);
         }
     }
 
     // Appointment SQL Operationen
     // ADD Appointment
     public static ResultSet getTierarztname() throws SQLException {
-        query = "SELECT name FROM 'person' WHERE id = (SELECT id FROM 'personal' WHERE arbeit = 'Tierarzt')";
+        query = "SELECT name FROM 'person' INNER JOIN 'personal' ON 'person'.id = 'personal'.id WHERE arbeit = 'Tierarzt'";
         connection = FullDB.connect();
         preparedStatement = connection.prepareStatement(query);
         return preparedStatement.executeQuery();
@@ -220,11 +228,11 @@ public class FullDB {
         getTerminQuery(termin);
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(5, String.valueOf(termin.getTerminid()));
             preparedStatement.setString(1, String.valueOf(termin.getDate()));
             preparedStatement.setString(2, String.valueOf(termin.getStartzeit()));
             preparedStatement.setString(3, String.valueOf(termin.getEndezeit()));
             preparedStatement.setString(4, termin.getAngabe());
+            preparedStatement.setString(5, String.valueOf(Termin.getTerminid()));
             preparedStatement.setString(6, termin.getTiername());
             preparedStatement.setString(7, termin.getTiernachname());
             preparedStatement.setString(8, termin.getTierarztname());
@@ -238,7 +246,7 @@ public class FullDB {
 
     }
     protected static void getTerminQuery(Termin termin) {
-        id = termin.getTerminid();
+        id = Termin.getTerminid();
 
         if (!update) {
             query = "INSERT INTO termin ('date', 'startzeit', 'endezeit', 'angabe', terminid, 'tiername', 'tiernachname', 'tierarztname', 'hbname', 'zustand') VALUES(?,?,?,?,?,?,?,?,?,?)";
@@ -284,7 +292,11 @@ public class FullDB {
             throw new RuntimeException(e);
         }
         if(resultSet.next()) {
-            termin = new Termin(resultSet.getInt("terminid"), resultSet.getString("tiername"), resultSet.getString("hbname"), resultSet.getString("tiernachname"), resultSet.getString("tierarzt"), resultSet.getString("angabe"), resultSet.getString("date"), resultSet.getString("startzeit"), resultSet.getString("endezeit"));
+            termin = new Termin(resultSet.getInt("terminid"), resultSet.getString("tiername"),
+                    resultSet.getString("hbname"), resultSet.getString("tiernachname"),
+                    resultSet.getString("tierarzt"), resultSet.getString("angabe"),
+                    resultSet.getString("date"), resultSet.getString("startzeit"),
+                    resultSet.getString("endezeit"));
         }
         return termin;
     }
@@ -295,7 +307,7 @@ public class FullDB {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.execute();
         } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
+            throw new RuntimeException(e);
         }
     }
     protected static ObservableList<Termin> getTerminDB() {
@@ -326,31 +338,29 @@ public class FullDB {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.execute();
         } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
+            throw new RuntimeException(e);
         }
     }
-    public static ResultSet getTierid() throws SQLException {
-        query = "SELECT tierid FROM 'tier'";
+    public static ResultSet getTierinfo() throws SQLException {
+        query = "SELECT tierid,name,nachname,hbname FROM 'tier' INNER JOIN person p on tier.tierid = p.id";
         preparedStatement = connection.prepareStatement(query);
         return preparedStatement.executeQuery();
     }
 
     // Zahlung SQL Operationen
     // ADD Zahlung
-    protected static void getZahlungQuery(int zahlungid) {
+    protected static void getZahlungQuery(Zahlung zahlung) {
+        id = Zahlung.getZahlungid();
 
         if (!update) {
-            query = "INSERT INTO zahlung ('zahlungsart', 'zahlungsbetrag', 'hbname', 'tiername', 'nachname', 'zustand', 'zahlungid', 'tierid') VALUES(?,?,?,?,?,?,?,?)";
+            query = "INSERT INTO zahlung ('zahlungsart', 'zahlungsbetrag', 'zustand', 'zahlungid', 'tierid') VALUES(?,?,?,?,?)";
         } else {
             query = "UPDATE 'zahlung' SET"
                     + "'zahlungsart' =?,"
                     + "'zahlungsbetrag' =?,"
-                    + "'hbname' = ?,"
-                    + "'tiername' =?,"
-                    + "'nachname' =?,"
                     + "'zustand' =?,"
                     + "'zahlungid' =?,"
-                    + "'tierid' =? WHERE zahlungid ='" + zahlungid + "'";
+                    + "'tierid' =? WHERE zahlungid ='" + id + "'";
         }
 
     }
@@ -359,14 +369,11 @@ public class FullDB {
 
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(7, String.valueOf(Zahlung.getZahlungid()));
             preparedStatement.setString(1, zahlung.getZahlungsart());
             preparedStatement.setString(2, String.valueOf(zahlung.getZahlungsbetrag()));
-            preparedStatement.setString(3, zahlung.getHbname());
-            preparedStatement.setString(4, zahlung.getTiername());
-            preparedStatement.setString(5, zahlung.getNachname());
-            preparedStatement.setString(8, String.valueOf(zahlung.getTierid()));
-            preparedStatement.setString(6, "nicht");
+            preparedStatement.setString(3, "nicht");
+            preparedStatement.setString(4, String.valueOf(Zahlung.getZahlungid()));
+            preparedStatement.setString(5, String.valueOf(zahlung.getTierid()));
             preparedStatement.execute();
 
         } catch (SQLException e) {
@@ -378,7 +385,7 @@ public class FullDB {
         try {
             query = "SELECT * FROM person INNER JOIN tier WHERE person.id = tier.tierid";
             preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -425,11 +432,13 @@ public class FullDB {
     protected static void makePaid(Zahlung zahlung) {
         try {
             query = "UPDATE zahlung SET zustand = 'gezahlt', zahlungsbetrag =  ABS(zahlungsbetrag) WHERE zahlungid = " + Zahlung.getZahlungid();
-            String query2 = "UPDATE tier SET kontostand = kontostand - " + zahlung.getZahlungsbetrag() + " WHERE tierid = '" + zahlung.getTierid() + "'";
+            String query2 = "UPDATE tier SET kontostand = kontostand + " + zahlung.getZahlungsbetrag() + " WHERE tierid = '" + zahlung.getTierid() + "'";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.execute();
+            preparedStatement = connection.prepareStatement(query2);
+            preparedStatement.execute();
         } catch (SQLException e) {
-            Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, e);
+            throw new RuntimeException(e);
         }
     }
     protected static ObservableList<Zahlung> getZahlungDB() {
@@ -437,15 +446,14 @@ public class FullDB {
         ObservableList<Zahlung> oblist = FXCollections.observableArrayList();
         try {
             oblist.clear();
-            query = "SELECT * FROM zahlung";
+            query = "SELECT * FROM zahlung INNER JOIN tier t ON zahlung.tierid = t.tierid INNER JOIN person p on t.tierid = p.id";
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Zahlung zahlung = new Zahlung(resultSet.getString("zahlungsart"), resultSet.getDouble("zahlungsbetrag"),
-                        resultSet.getString("nachname"), resultSet.getString("hbname"),
-                        resultSet.getString("tiername"), resultSet.getInt("zahlungid"),
-                        resultSet.getString("zustand"));
+                        resultSet.getInt("zahlungid"), resultSet.getString("zustand"), resultSet.getInt("tierid"),
+                        resultSet.getString("name"), resultSet.getString("nachname"), resultSet.getString("hbname"));
                 oblist.add(zahlung);
             }
         } catch (SQLException e) {
@@ -454,5 +462,127 @@ public class FullDB {
         return oblist;
     }
 
+    // Rezepte SQL Operationen
+    // ADD Rezepte
+    public static int getRezeptId() throws SQLException {
+        query = "SELECT * FROM rezepte";
+        int rezeptid = 0;
+        try {
+            connection = FullDB.connect();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        while (resultSet.next()) {
+            rezeptid = resultSet.getInt("rezeptid");
+        }
+        return rezeptid+1;
+    }
+    protected static void getRezepteQuery(Rezepte rezept) {
+        id = rezept.getRezeptId();
+
+        if (!update) {
+            query = "INSERT INTO rezepte ('rezeptid', 'tierid', 'tiername', 'nachname', 'medizin', 'date') VALUES(?,?,?,?,?,?)";
+        } else {
+            query = "UPDATE 'rezepte' SET"
+                    + "'tierid' =?,"
+                    + "'tiername' =?,"
+                    + "'nachname' =?,"
+                    + "'medizin' =?,"
+                    + "'date' =?,"
+                    + "'rezeptid' =? WHERE rezeptid ='" + id + "'";
+        }
+
+    }
+    protected static void insertRezepte(Rezepte rezept){
+        id = rezept.getRezeptId();
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, String.valueOf(rezept.getRezeptId()));
+            preparedStatement.setString(2, String.valueOf(rezept.getTierId()));
+            preparedStatement.setString(3, rezept.getTierName());
+            preparedStatement.setString(4, rezept.getNachaname());
+            preparedStatement.setString(5, rezept.getMedizin());
+            preparedStatement.setString(6, String.valueOf(rezept.getDate()));
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    // Rezepte Table
+    protected static ObservableList<Rezepte> getRezepteDB() {
+        setConnection();
+        ObservableList<Rezepte> oblist = FXCollections.observableArrayList();
+        try {
+            oblist.clear();
+            query = "SELECT * FROM rezepte";
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Rezepte rezept = new Rezepte(resultSet.getInt("rezeptid"), resultSet.getInt("tierid"),
+                        resultSet.getString("tiername"), resultSet.getString("nachname"),
+                        resultSet.getString("medizin"), resultSet.getDate("date"));
+                oblist.add(rezept);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return oblist;
+    }
+
+    // General Operationen
+
+    /*
+    public static String getHBName(int tierid) throws SQLException {
+        query = "SELECT * FROM tier WHERE tierid =" + tierid;
+        String hbname = "";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        while (resultSet.next()) {
+            hbname = resultSet.getString("hbname");
+        }
+        return hbname;
+    }
+
+    public static String getTiername(int tierid) throws SQLException {
+        query = "SELECT * FROM person WHERE id =" + tierid;
+        String tiername = "";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        while (resultSet.next()) {
+            tiername = resultSet.getString("name");
+        }
+        return tiername;
+    }
+
+    public static String getNachname(int tierid) throws SQLException {
+        query = "SELECT * FROM person WHERE id =" + tierid;
+        String nachname = "";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        while (resultSet.next()) {
+            nachname = resultSet.getString("nachname");
+        }
+        return nachname;
+    }
+    */
 
 }

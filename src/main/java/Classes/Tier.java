@@ -14,8 +14,8 @@ public class Tier extends Person {
     public Tier(Integer id, String name, String nachname) {
         super(id,name,nachname);
     }
-    public Tier(Integer tierid, String name, String nachname, Integer telefonnummer, String email, String adresse, String hbname, Integer hbid, Double kontostand) {
-        super(tierid, name, nachname, telefonnummer, email, adresse);
+    public Tier(Integer id, String name, String nachname, Integer telefonnummer, String email, String adresse, String hbname, Integer hbid, Double kontostand) {
+        super(id, name, nachname, telefonnummer, email, adresse);
         this.hbname = hbname;
         this.hbid = hbid;
         this.kontostand = kontostand;
@@ -30,7 +30,7 @@ public class Tier extends Person {
         this.gewicht = gewicht;
     }
 
-    public void setHbName(String hbname) {
+    public void setHbname(String hbname) {
         this.hbname = hbname;
     }
 
@@ -46,11 +46,11 @@ public class Tier extends Person {
         this.operationen = operationen;
     }
 
-    public void setTierId(Integer tierid) {
+    public void setTierid(Integer tierid) {
         this.tierid = tierid;
     }
 
-    public void setHBId(Integer hbid) {
+    public void setHBid(Integer hbid) {
         this.hbid = hbid;
     }
 
@@ -71,7 +71,7 @@ public class Tier extends Person {
         return geschichte;
     }
 
-    public String getHbName() {
+    public String getHbname() {
         return hbname;
     }
 
@@ -79,14 +79,11 @@ public class Tier extends Person {
         return operationen;
     }
 
-    public Integer getTierId() {
+    public Integer getTierid() {
         return tierid;
     }
 
     public Integer getHbid() {
         return hbid;
-    }
-    public Integer getId() {
-        return tierid;
     }
 }

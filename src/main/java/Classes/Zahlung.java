@@ -1,7 +1,6 @@
 package Classes;
 
 import tierklinik.FullDB;
-import tierklinik.TableControllerKontenstelle;
 
 import java.sql.SQLException;
 
@@ -9,28 +8,21 @@ public class Zahlung {
     private static Integer zahlungid;
     private String zahlungsart;
     private Double zahlungsbetrag;
-    private String hbname;
-    private String tiername;
-    private String nachname;
     private String zustand;
-    private Integer tierid;
-    public Zahlung(String zahlungsart, double zahlungsbetrag, String nachname, String hbname, String tiername) throws SQLException {
+    private static Integer tierid;
+    public Zahlung(String zahlungsart, double zahlungsbetrag, Integer tierid) throws SQLException {
         zahlungid = FullDB.getZahlungid();
+        this.tierid = tierid;
         this.zahlungsart = zahlungsart;
         this.zahlungsbetrag = zahlungsbetrag;
-        this.hbname = hbname;
-        this.nachname = nachname;
-        this.tiername = tiername;
         zustand  = "nicht";
     }
-    public Zahlung(String zahlungsart, double zahlungsbetrag, String nachname, String hbname, String tiername, Integer zahlungid, String zustand) throws SQLException {
+    public Zahlung(String zahlungsart, double zahlungsbetrag, Integer zahlungid, String zustand, Integer tierid, String tiername, String tiernachname, String hbname) throws SQLException {
         zahlungid = FullDB.getZahlungid();
         this.zahlungsart = zahlungsart;
         this.zahlungsbetrag = zahlungsbetrag;
-        this.hbname = hbname;
-        this.nachname = nachname;
-        this.tiername = tiername;
         this.zustand = zustand;
+        this.tierid = tierid;
     }
 
     // Setter
@@ -44,18 +36,6 @@ public class Zahlung {
 
     public void setZahlungsbetrag(Double zahlungsbetrag) {
         this.zahlungsbetrag = zahlungsbetrag;
-    }
-
-    public void setHbname(String hbname) {
-        this.hbname = hbname;
-    }
-
-    public void setTiername(String tiername) {
-        this.tiername = tiername;
-    }
-
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
     }
 
     public void setZustand(String zustand) {
@@ -78,22 +58,10 @@ public class Zahlung {
         return zahlungsbetrag;
     }
 
-    public String getHbname() {
-        return hbname;
-    }
-
-    public String getTiername() {
-        return tiername;
-    }
-
-    public String getNachname() {
-        return nachname;
-    }
-
     public String getZustand() {
         return zustand;
     }
-    public Integer getTierid() {
+    public static Integer getTierid() {
         return tierid;
     }
 }

@@ -23,7 +23,7 @@
         <HBox prefHeight="50.0" prefWidth="200.0" />
         <HBox prefHeight="50.0" prefWidth="200.0">
             <children>
-                <Text fx:id="addName_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Tier Name:">
+                <Text fx:id="addTel_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Tier:">
                     <HBox.margin>
                         <Insets left="35.0" top="10.0" />
                     </HBox.margin>
@@ -31,54 +31,11 @@
                         <Font name="Raleway Light" size="18.0" />
                     </font>
                 </Text>
-                <TextField fx:id="addTiername" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="113.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
-            </children>
-        </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addNachname_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="HB Name:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="addHBname" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="118.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
-            </children>
-        </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addTel_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Tier Nachname:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="addTiernachname" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="70.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
+            <ChoiceBox fx:id="addTier" prefWidth="400.0">
+               <HBox.margin>
+                  <Insets left="166.0" top="10.0" />
+               </HBox.margin>
+            </ChoiceBox>
             </children>
         </HBox>
         <HBox prefHeight="50.0" prefWidth="200.0">
@@ -178,7 +135,7 @@
                 </TextField>
             </children>
         </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0" />
+        <HBox prefHeight="150.0" prefWidth="200.0" />
         <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
                 <Button fx:id="addP_Hin" mnemonicParsing="false" onMouseClicked="#save" prefHeight="30.0" prefWidth="100.0" text="Hinzufügen">

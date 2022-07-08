@@ -24,7 +24,7 @@ public class TableControllerTier implements Initializable {
     @FXML
     private TableView<Tier> table;
     @FXML
-    private TableColumn<Person,Integer> col_id;
+    private TableColumn<Tier,Integer> col_id;
     @FXML
     private TableColumn<Person,String> col_tiername;
     @FXML

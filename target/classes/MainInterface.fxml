@@ -77,6 +77,18 @@
                   <Insets bottom="10.0" left="20.0" top="10.0" />
                </VBox.margin>
             </JFXButton>
+            <JFXButton fx:id="rezepteButton" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#getRezepteView">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@png/rezepte.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+            </JFXButton>
          </children>
       </VBox>
       <Label layoutX="118.0" layoutY="36.0" text="Willkommen Sie!" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="30.0">
@@ -198,7 +210,7 @@
             </Pane>
             <Pane prefHeight="80.0" prefWidth="180.0" style="-fx-background-color: #001eff#001eff; -fx-background-radius: 10;">
                <children>
-                  <JFXButton fx:id="ZahlungSehen1" layoutX="70.0" layoutY="40.0" onMouseClicked="#getRezepte" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: #FFFFFF;" text="sehen" textFill="#00e1ff">
+                  <JFXButton fx:id="RezepteErstellen" layoutX="60.0" layoutY="40.0" prefHeight="25.0" prefWidth="80.0" style="-fx-background-color: #FFFFFF;" text="erstellen" textFill="#00e1ff">
                      <font>
                         <Font name="Raleway Medium" size="13.0" />
                      </font>
@@ -214,6 +226,26 @@
                </children>
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />
+               </VBox.margin>
+            </Pane>
+            <Pane prefHeight="80.0" prefWidth="180.0" style="-fx-background-color: #001eff#001eff; -fx-background-radius: 10;">
+               <children>
+                  <JFXButton fx:id="RezepteSehen" layoutX="70.0" layoutY="40.0" onMouseClicked="#getRezepteView" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: #FFFFFF;" text="sehen" textFill="#00e1ff">
+                     <font>
+                        <Font name="Raleway Medium" size="13.0" />
+                     </font>
+                  </JFXButton>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutY="12.0" prefHeight="41.0" prefWidth="200.0" text="Rezepte" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="20.0" />
+                     </padding>
+                     <font>
+                        <Font name="Raleway Medium" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </Pane>
          </children>
