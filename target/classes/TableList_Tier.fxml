@@ -10,60 +10,58 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tierklinik.TableControllerTier">
-    <children>
-        <TableView fx:id="table" layoutX="144.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0" AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="89.0">
-            <columns>
-                <TableColumn fx:id="col_id" prefWidth="120.0" text="Tier ID" />
-                <TableColumn fx:id="col_tiername" prefWidth="120.0" text="Name" />
-                <TableColumn fx:id="col_nachname" prefWidth="120.0" text="Nachname" />
-                <TableColumn fx:id="col_telnum" prefWidth="120.0" text="Telefonnummer" />
-                <TableColumn fx:id="col_mail" prefWidth="120.0" text="Email" />
-                <TableColumn fx:id="col_adresse" prefWidth="120.0" text="Adresse" />
-                <TableColumn fx:id="col_hbname" prefWidth="120.0" text="HB Name" />
-                <TableColumn fx:id="col_hbid" prefWidth="120.0" text="Haustierbesitzer ID" />
-                <TableColumn fx:id="col_kontostand" prefWidth="120.0" text="Kontostand" />
-            </columns>
-        </TableView>
-        <Label fx:id="table_label" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="3.0" layoutY="-2.0" prefHeight="84.0" prefWidth="262.0" text="Tier">
-            <font>
-                <Font name="Raleway Light" size="36.0" />
-            </font>
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-        </Label>
-        <HBox fx:id="edit" layoutX="1173.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="200.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <ImageView fx:id="refreshIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#refreshTable">
-                    <image>
-                        <Image url="@png/refresh.png" />
-                    </image>
-                    <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
-                    </HBox.margin>
-                </ImageView>
-                <ImageView fx:id="deleteIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#deleteTier">
-                    <image>
-                        <Image url="@png/person-remove.png" />
-                    </image>
-                    <HBox.margin>
-                        <Insets bottom="20.0" left="10.0" right="20.0" top="20.0" />
-                    </HBox.margin>
-                </ImageView>
-                <ImageView fx:id="addIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#getAddView">
-                    <image>
-                        <Image url="@png/person-add.png" />
-                    </image>
-                    <HBox.margin>
-                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-                    </HBox.margin>
-                </ImageView>
-            </children>
-            <padding>
-                <Insets top="5.0" />
-            </padding>
-        </HBox>
-    </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0"
+            prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tierklinik.TableControllerTier">
 
+    <TableView fx:id="table" layoutX="144.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity"
+               minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0"
+               AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0"
+               AnchorPane.topAnchor="89.0">
+        <columns>
+            <TableColumn fx:id="col_id" prefWidth="120.0" text="Tier ID"/>
+            <TableColumn fx:id="col_tiername" prefWidth="120.0" text="Name"/>
+            <TableColumn fx:id="col_nachname" prefWidth="120.0" text="Nachname"/>
+            <TableColumn fx:id="col_telnum" prefWidth="120.0" text="Telefonnummer"/>
+            <TableColumn fx:id="col_mail" prefWidth="120.0" text="Email"/>
+            <TableColumn fx:id="col_adresse" prefWidth="120.0" text="Adresse"/>
+            <TableColumn fx:id="col_hbname" prefWidth="120.0" text="HB Name"/>
+            <TableColumn fx:id="col_hbid" prefWidth="120.0" text="Haustierbesitzer ID"/>
+            <TableColumn fx:id="col_kontostand" prefWidth="120.0" text="Kontostand"/>
+        </columns>
+    </TableView>
+    <Label alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="3.0" layoutY="-2.0"
+           prefHeight="84.0" prefWidth="262.0" text="Tier">
+        <font>
+            <Font name="Raleway Light" size="36.0"/>
+        </font>
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        </padding>
+    </Label>
+    <HBox layoutX="1173.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+          minWidth="-Infinity" prefHeight="80.0" prefWidth="200.0" AnchorPane.rightAnchor="10.0"
+          AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets top="5.0"/>
+        </padding>
+        <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#refreshTable">
+            <HBox.margin>
+                <Insets bottom="20.0" left="20.0" right="10.0" top="20.0"/>
+            </HBox.margin>
+            <Image url="@png/refresh.png"/>
+        </ImageView>
+        <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#deleteTier">
+            <HBox.margin>
+                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0"/>
+            </HBox.margin>
+            <Image url="@png/person-remove.png"/>
+        </ImageView>
+        <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#getAddView">
+            <HBox.margin>
+                <Insets bottom="20.0" left="10.0" right="10.0" top="20.0"/>
+            </HBox.margin>
+            <Image url="@png/person-add.png"/>
+        </ImageView>
+    </HBox>
 </AnchorPane>

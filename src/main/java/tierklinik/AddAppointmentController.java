@@ -11,7 +11,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -28,10 +27,7 @@ public class AddAppointmentController implements Initializable {
     private TextField addStartzeit;
     @FXML
     private TextField addEndezeit;
-    private boolean update;
     int terminid;
-    int tierid;
-    String tiername, nachname, hbname;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -59,7 +55,7 @@ public class AddAppointmentController implements Initializable {
         }
     }
     @FXML
-    private void save() throws SQLException{
+    private void save() throws SQLException, ParseException {
         if(addTierarztname.getValue().isEmpty() || addAngabe.getText().isEmpty() || addDate.getText().isEmpty() ||
                 addStartzeit.getText().isEmpty()|| addEndezeit.getText().isEmpty() || addTier.getValue().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -89,10 +85,6 @@ public class AddAppointmentController implements Initializable {
         addAngabe.setText(null);
         addTierarztname.setValue(null);
         addTier.setValue(null);
-    }
-
-    void setUpdate(boolean b) {
-        this.update = b;
     }
 
 }

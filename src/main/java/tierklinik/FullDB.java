@@ -31,14 +31,6 @@ public class FullDB {
         }
     }
 
-    public static void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     // Personal SQL Operationen
     // ADD Personal
     protected static void getPersonalQuery(Personal personal) {
@@ -535,54 +527,5 @@ public class FullDB {
         }
         return oblist;
     }
-
-    // General Operationen
-
-    /*
-    public static String getHBName(int tierid) throws SQLException {
-        query = "SELECT * FROM tier WHERE tierid =" + tierid;
-        String hbname = "";
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        while (resultSet.next()) {
-            hbname = resultSet.getString("hbname");
-        }
-        return hbname;
-    }
-
-    public static String getTiername(int tierid) throws SQLException {
-        query = "SELECT * FROM person WHERE id =" + tierid;
-        String tiername = "";
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        while (resultSet.next()) {
-            tiername = resultSet.getString("name");
-        }
-        return tiername;
-    }
-
-    public static String getNachname(int tierid) throws SQLException {
-        query = "SELECT * FROM person WHERE id =" + tierid;
-        String nachname = "";
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        while (resultSet.next()) {
-            nachname = resultSet.getString("nachname");
-        }
-        return nachname;
-    }
-    */
 
 }

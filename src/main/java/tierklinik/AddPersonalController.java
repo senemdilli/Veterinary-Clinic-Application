@@ -32,7 +32,6 @@ public class AddPersonalController implements Initializable {
     private TextField addGehalt;
 
     private final String[] arbeiten = {"Sekretär", "Tierarzt", "Anderen"};
-    private boolean update;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -74,21 +73,4 @@ public class AddPersonalController implements Initializable {
         addEmail.setText(null);
         addGehalt.setText(null);
     }
-
-    void setTextField(int id, String name, String nachname, Integer telefonnummer, String email, String adresse, String arbeit, Integer personalnummer, Double gehalt) {
-        addId.setText(String.valueOf(id));
-        addName.setText(name);
-        addNachname.setText(nachname);
-        addAdresse.setText(adresse);
-        addTel.setText(String.valueOf(telefonnummer));
-        addPnummer.setText(String.valueOf(personalnummer));
-        addArbeit.setValue(arbeit);
-        addEmail.setText(email);
-        addGehalt.setText(String.valueOf(gehalt));
-    }
-
-    void setUpdate(boolean b) {
-        this.update = b;
-    }
-
 }

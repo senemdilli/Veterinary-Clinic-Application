@@ -1,18 +1,12 @@
 package tierklinik;
 
-import Classes.Personal;
 import Classes.Tier;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddTierController implements Initializable {
@@ -35,14 +29,6 @@ public class AddTierController implements Initializable {
     private TextField addAdresse;
     @FXML
     private TextField addKontostand;
-
-    String query = null;
-    String query2 = null;
-    Connection connection = null;
-    ResultSet resultSet = null;
-    PreparedStatement preparedStatement;
-    Personal personal = null;
-    private boolean update;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -83,22 +69,6 @@ public class AddTierController implements Initializable {
         addHBId.setText(null);
         addEmail.setText(null);
         addKontostand.setText(null);
-    }
-
-    void setTextField(Integer tierid, String tiername, String nachname, Integer telefonnummer, String email, String adresse, String hbname, Integer hbid, Double kontostand) {
-        addTierId.setText(String.valueOf(tierid));
-        addTierName.setText(tiername);
-        addNachname.setText(nachname);
-        addAdresse.setText(adresse);
-        addTel.setText(String.valueOf(telefonnummer));
-        addHBName.setText(String.valueOf(hbname));
-        addHBId.setText(String.valueOf(hbid));
-        addEmail.setText(email);
-        addKontostand.setText(String.valueOf(kontostand));
-    }
-
-    void setUpdate(boolean b) {
-        this.update = b;
     }
 
 }

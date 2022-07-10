@@ -10,64 +10,62 @@
         <?import javafx.scene.layout.HBox?>
         <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tierklinik.TableControllerAppointment">
-<children>
-    <TableView fx:id="table" layoutX="144.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0" AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="89.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0"
+            prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tierklinik.TableControllerAppointment">
+    <TableView fx:id="table" layoutX="144.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity"
+               minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0"
+               AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0"
+               AnchorPane.topAnchor="89.0">
         <columns>
-            <TableColumn fx:id="col_zustand" prefWidth="120.0" text="Zustand" />
-            <TableColumn fx:id="col_tiername" prefWidth="120.0" text="Tier Name" />
-            <TableColumn fx:id="col_hbname" prefWidth="120.0" text="HB Name" />
-            <TableColumn fx:id="col_tiernachname" prefWidth="120.0" text="Tier Nachname" />
-            <TableColumn fx:id="col_tierarzt" prefWidth="120.0" text="Tierarzt Name" />
-            <TableColumn fx:id="col_angabe" prefWidth="120.0" text="Angabe" />
-            <TableColumn fx:id="col_date" prefWidth="120.0" text="Date" />
-            <TableColumn fx:id="col_startzeit" prefWidth="120.0" text="Startzeit" />
-            <TableColumn fx:id="col_endezeit" prefWidth="120.0" text="Endezeit" />
+            <TableColumn fx:id="col_zustand" prefWidth="120.0" text="Zustand"/>
+            <TableColumn fx:id="col_tiername" prefWidth="120.0" text="Tier Name"/>
+            <TableColumn fx:id="col_hbname" prefWidth="120.0" text="HB Name"/>
+            <TableColumn fx:id="col_tiernachname" prefWidth="120.0" text="Tier Nachname"/>
+            <TableColumn fx:id="col_tierarzt" prefWidth="120.0" text="Tierarzt Name"/>
+            <TableColumn fx:id="col_angabe" prefWidth="120.0" text="Angabe"/>
+            <TableColumn fx:id="col_date" prefWidth="120.0" text="Date"/>
+            <TableColumn fx:id="col_startzeit" prefWidth="120.0" text="Startzeit"/>
+            <TableColumn fx:id="col_endezeit" prefWidth="120.0" text="Endezeit"/>
         </columns>
     </TableView>
-    <Label fx:id="table_label" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="3.0" layoutY="-2.0" prefHeight="84.0" prefWidth="262.0" text="Termin">
+    <Label  alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="3.0" layoutY="-2.0"
+           prefHeight="84.0" prefWidth="262.0" text="Termin">
         <font>
-            <Font name="Raleway Light" size="36.0" />
+            <Font name="Raleway Light" size="36.0"/>
         </font>
         <padding>
-            <Insets left="20.0" top="20.0" />
-        </padding></Label>
-    <HBox fx:id="edit" layoutX="1166.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
-        <children>
-            <ImageView fx:id="refreshIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#refreshTable">
-                <image>
-                    <Image url="@png/calendar_refresh.png" />
-                </image>
-                <HBox.margin>
-                    <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
-                </HBox.margin>
-            </ImageView>
-            <ImageView fx:id="removeIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#removeTermin">
-                <image>
-                    <Image url="@png/calendar_remove.png" />
-                </image>
-                <HBox.margin>
-                    <Insets bottom="20.0" left="10.0" right="20.0" top="20.0" />
-                </HBox.margin>
-            </ImageView>
-            <ImageView fx:id="addIcon" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#getAddView">
-                <image>
-                    <Image url="@png/calendar_add.png" />
-                </image>
-                <HBox.margin>
-                    <Insets bottom="20.0" right="10.0" top="20.0" />
-                </HBox.margin>
-            </ImageView>
-        </children>
-        <padding>
-            <Insets top="5.0" />
+            <Insets left="20.0" top="20.0"/>
         </padding>
+    </Label>
+    <HBox layoutX="1166.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+          minWidth="-Infinity" prefHeight="80.0" prefWidth="200.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="-2.0">
+        <padding>
+            <Insets top="5.0"/>
+        </padding>
+        <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#refreshTable">
+            <HBox.margin>
+                <Insets bottom="20.0" left="20.0" right="10.0" top="20.0"/>
+            </HBox.margin>
+            <Image url="@png/calendar_refresh.png"/>
+        </ImageView>
+        <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#removeTermin">
+            <HBox.margin>
+                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0"/>
+            </HBox.margin>
+            <Image url="@png/calendar_remove.png"/>
+        </ImageView>
+        <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#getAddView">
+            <HBox.margin>
+                <Insets bottom="20.0" right="10.0" top="20.0"/>
+            </HBox.margin>
+            <Image url="@png/calendar_add.png"/>
+        </ImageView>
     </HBox>
-    <ImageView fx:id="doneIcon" fitHeight="40.0" fitWidth="40.0" layoutX="1150.0" layoutY="25.0" onMouseClicked="#makeDone" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="25.0">
-        <image>
-            <Image url="@png/calendar_done.png" />
-        </image>
+    <ImageView  fitHeight="40.0" fitWidth="40.0" layoutX="1150.0" layoutY="25.0"
+               onMouseClicked="#makeDone" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="25.0">
+        <Image url="@png/calendar_done.png"/>
     </ImageView>
-</children>
 </AnchorPane>
 

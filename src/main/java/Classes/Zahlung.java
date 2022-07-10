@@ -12,7 +12,7 @@ public class Zahlung {
     private static Integer tierid;
     public Zahlung(String zahlungsart, double zahlungsbetrag, Integer tierid) throws SQLException {
         zahlungid = FullDB.getZahlungid();
-        this.tierid = tierid;
+        Zahlung.tierid = tierid;
         this.zahlungsart = zahlungsart;
         this.zahlungsbetrag = zahlungsbetrag;
         zustand  = "nicht";
@@ -22,7 +22,7 @@ public class Zahlung {
         this.zahlungsart = zahlungsart;
         this.zahlungsbetrag = zahlungsbetrag;
         this.zustand = zustand;
-        this.tierid = tierid;
+        Zahlung.tierid = tierid;
     }
 
     // Setter
@@ -42,7 +42,7 @@ public class Zahlung {
         this.zustand = zustand;
     }
     public void setTierid(Integer tierid) {
-        this.tierid = tierid;
+        Zahlung.tierid = tierid;
     }
 
     // Getter

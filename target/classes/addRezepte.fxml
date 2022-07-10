@@ -12,8 +12,8 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
       prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="tierklinik.AddAppointmentController">
-    <Label text="Termin Hinzufügen">
+      fx:controller="tierklinik.AddRezepteController">
+    <Label text="Rezept Erstellen">
         <VBox.margin>
             <Insets left="30.0" top="30.0"/>
         </VBox.margin>
@@ -21,7 +21,7 @@
             <Font name="Raleway SemiBold" size="24.0"/>
         </font>
     </Label>
-    <HBox prefHeight="50.0" prefWidth="200.0"/>
+    <HBox prefHeight="100.0" prefWidth="200.0"/>
     <HBox prefHeight="50.0" prefWidth="200.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tier:">
             <HBox.margin>
@@ -33,12 +33,12 @@
         </Text>
         <ChoiceBox fx:id="addTier" prefWidth="400.0">
             <HBox.margin>
-                <Insets left="166.0" top="10.0"/>
+                <Insets left="135.0" top="10.0"/>
             </HBox.margin>
         </ChoiceBox>
     </HBox>
     <HBox prefHeight="50.0" prefWidth="200.0">
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tierarzt Name:">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Medizin:">
             <HBox.margin>
                 <Insets left="35.0" top="10.0"/>
             </HBox.margin>
@@ -46,27 +46,12 @@
                 <Font name="Raleway Light" size="18.0"/>
             </font>
         </Text>
-        <ChoiceBox fx:id="addTierarztname" prefWidth="400.0">
-            <HBox.margin>
-                <Insets left="79.0" top="10.0"/>
-            </HBox.margin>
-        </ChoiceBox>
-    </HBox>
-    <HBox prefHeight="50.0" prefWidth="200.0">
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Angabe:">
-            <HBox.margin>
-                <Insets left="35.0" top="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Raleway Light" size="18.0"/>
-            </font>
-        </Text>
-        <TextField fx:id="addAngabe" prefHeight="20.0" prefWidth="400.0">
+        <TextField fx:id="addMedizin" prefHeight="20.0" prefWidth="400.0">
             <opaqueInsets>
                 <Insets/>
             </opaqueInsets>
             <HBox.margin>
-                <Insets left="130.0" top="10.0"/>
+                <Insets left="100.0" top="10.0"/>
             </HBox.margin>
         </TextField>
     </HBox>
@@ -84,47 +69,11 @@
                 <Insets/>
             </opaqueInsets>
             <HBox.margin>
-                <Insets left="155.0" top="10.0"/>
+                <Insets left="125.0" top="10.0"/>
             </HBox.margin>
         </TextField>
     </HBox>
-    <HBox prefHeight="50.0" prefWidth="200.0">
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Startzeit:">
-            <HBox.margin>
-                <Insets left="35.0" top="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Raleway Light" size="18.0"/>
-            </font>
-        </Text>
-        <TextField fx:id="addStartzeit" prefHeight="20.0" prefWidth="400.0">
-            <opaqueInsets>
-                <Insets/>
-            </opaqueInsets>
-            <HBox.margin>
-                <Insets left="126.0" top="10.0"/>
-            </HBox.margin>
-        </TextField>
-    </HBox>
-    <HBox prefHeight="50.0" prefWidth="200.0">
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Endezeit:">
-            <HBox.margin>
-                <Insets left="35.0" top="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Raleway Light" size="18.0"/>
-            </font>
-        </Text>
-        <TextField fx:id="addEndezeit" prefHeight="20.0" prefWidth="400.0">
-            <opaqueInsets>
-                <Insets/>
-            </opaqueInsets>
-            <HBox.margin>
-                <Insets left="123.0" top="10.0"/>
-            </HBox.margin>
-        </TextField>
-    </HBox>
-    <HBox prefHeight="150.0" prefWidth="200.0"/>
+    <HBox prefHeight="250.0" prefWidth="200.0"/>
     <HBox prefHeight="100.0" prefWidth="200.0">
         <Button mnemonicParsing="false" onMouseClicked="#save" prefHeight="30.0" prefWidth="100.0"
                 text="Hinzufügen">

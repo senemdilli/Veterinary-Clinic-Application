@@ -15,38 +15,40 @@ import java.util.ResourceBundle;
 public class AddRezepteController implements Initializable {
 
     @FXML
-    private TextField addTierId;
-    @FXML
-    private TextField addTiername;
-    @FXML
-    private TextField addNachname;
+    private ChoiceBox<String> addTier;
     @FXML
     private TextField addMedizin;
     @FXML
     private TextField addDate;
-    private boolean update;
     int terminid;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             terminid = FullDB.getRezeptId();
+            getTierinfo();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+    private void getTierinfo() throws SQLException {
+        ResultSet resultSet = FullDB.getTierinfo();
+        while (resultSet.next()) {
+            addTier.getItems().add(resultSet.getString("tierid") + " | " + resultSet.getString("name") + " | " + resultSet.getString("nachname"));
+        }
+    }
     @FXML
     private void save() throws SQLException {
-        if(addTierId.getText().isEmpty() || addTiername.getText().isEmpty() || addNachname.getText().isEmpty() ||
-                addMedizin.getText().isEmpty() || addDate.getText().isEmpty()) {
+        if(addTier.getValue().isEmpty() || addMedizin.getText().isEmpty() || addDate.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fehler");
             alert.setHeaderText("Bitte alle Felder ausfüllen!");
             alert.showAndWait();
         } else {
-            Rezepte rezept = new Rezepte(Integer.parseInt(addTierId.getText()),addMedizin.getText());
-            rezept.setNachaname(addNachname.getText());
-            rezept.setTierName(addTiername.getText());
+            String[] tierinfo = addTier.getValue().split("\\|");
+            Rezepte rezept = new Rezepte(Integer.parseInt(tierinfo[0]),addMedizin.getText());
+            rezept.setNachaname(tierinfo[2]);
+            rezept.setTierName(tierinfo[1]);
             rezept.setDate(addDate.getText());
 
             FullDB.getRezepteQuery(rezept);
@@ -59,12 +61,7 @@ public class AddRezepteController implements Initializable {
     private void clean() {
         addDate.setText(null);
         addMedizin.setText(null);
-        addNachname.setText(null);
-        addTiername.setText(null);
-        addTierId.setText(null);
-    }
-    void setUpdate(boolean b) {
-        this.update = b;
+        addTier.setValue(null);
     }
 
 }

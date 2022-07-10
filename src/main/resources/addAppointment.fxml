@@ -10,151 +10,139 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="TerminHin_Box" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tierklinik.AddAppointmentController">
-    <children>
-        <Label fx:id="TerminHin_Label" text="Termin Hinzufügen">
-            <VBox.margin>
-                <Insets left="30.0" top="30.0" />
-            </VBox.margin>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+      prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tierklinik.AddAppointmentController">
+    <Label text="Termin Hinzufügen">
+        <VBox.margin>
+            <Insets left="30.0" top="30.0"/>
+        </VBox.margin>
+        <font>
+            <Font name="Raleway SemiBold" size="24.0"/>
+        </font>
+    </Label>
+    <HBox prefHeight="50.0" prefWidth="200.0"/>
+    <HBox prefHeight="50.0" prefWidth="200.0">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tier:">
+            <HBox.margin>
+                <Insets left="35.0" top="10.0"/>
+            </HBox.margin>
             <font>
-                <Font name="Raleway SemiBold" size="24.0" />
+                <Font name="Raleway Light" size="18.0"/>
             </font>
-        </Label>
-        <HBox prefHeight="50.0" prefWidth="200.0" />
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addTel_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Tier:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-            <ChoiceBox fx:id="addTier" prefWidth="400.0">
-               <HBox.margin>
-                  <Insets left="166.0" top="10.0" />
-               </HBox.margin>
-            </ChoiceBox>
-            </children>
-        </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addEmail_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Tierarzt Name:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-            <ChoiceBox fx:id="addTierarztname" prefWidth="400.0">
-               <HBox.margin>
-                  <Insets left="79.0" top="10.0" />
-               </HBox.margin>
-            </ChoiceBox>
-            </children>
-        </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addAdresse_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Angabe:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="addAngabe" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="130.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
-            </children>
-        </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addArbeit_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="addDate" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="155.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
-            </children>
-        </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addPnummer_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Startzeit:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="addStartzeit" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="126.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
-            </children>
-        </HBox>
-        <HBox prefHeight="50.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="addGehalt_Label" strokeType="OUTSIDE" strokeWidth="0.0" text="Endezeit:">
-                    <HBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Light" size="18.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="addEndezeit" prefHeight="20.0" prefWidth="400.0">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="123.0" top="10.0" />
-                    </HBox.margin>
-                </TextField>
-            </children>
-        </HBox>
-        <HBox prefHeight="150.0" prefWidth="200.0" />
-        <HBox prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Button fx:id="addP_Hin" mnemonicParsing="false" onMouseClicked="#save" prefHeight="30.0" prefWidth="100.0" text="Hinzufügen">
-                    <HBox.margin>
-                        <Insets left="200.0" top="30.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Medium" size="13.0" />
-                    </font>
-                </Button>
-                <Button fx:id="addP_Löschen" mnemonicParsing="false" onMouseClicked="#clean" prefHeight="30.0" prefWidth="100.0" text="Löschen">
-                    <HBox.margin>
-                        <Insets left="60.0" top="30.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font name="Raleway Medium" size="13.0" />
-                    </font>
-                </Button>
-            </children>
-        </HBox>
-    </children>
+        </Text>
+        <ChoiceBox fx:id="addTier" prefWidth="400.0">
+            <HBox.margin>
+                <Insets left="166.0" top="10.0"/>
+            </HBox.margin>
+        </ChoiceBox>
+    </HBox>
+    <HBox prefHeight="50.0" prefWidth="200.0">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tierarzt Name:">
+            <HBox.margin>
+                <Insets left="35.0" top="10.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Raleway Light" size="18.0"/>
+            </font>
+        </Text>
+        <ChoiceBox fx:id="addTierarztname" prefWidth="400.0">
+            <HBox.margin>
+                <Insets left="79.0" top="10.0"/>
+            </HBox.margin>
+        </ChoiceBox>
+    </HBox>
+    <HBox prefHeight="50.0" prefWidth="200.0">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Angabe:">
+            <HBox.margin>
+                <Insets left="35.0" top="10.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Raleway Light" size="18.0"/>
+            </font>
+        </Text>
+        <TextField fx:id="addAngabe" prefHeight="20.0" prefWidth="400.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <HBox.margin>
+                <Insets left="130.0" top="10.0"/>
+            </HBox.margin>
+        </TextField>
+    </HBox>
+    <HBox prefHeight="50.0" prefWidth="200.0">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:">
+            <HBox.margin>
+                <Insets left="35.0" top="10.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Raleway Light" size="18.0"/>
+            </font>
+        </Text>
+        <TextField fx:id="addDate" prefHeight="20.0" prefWidth="400.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <HBox.margin>
+                <Insets left="155.0" top="10.0"/>
+            </HBox.margin>
+        </TextField>
+    </HBox>
+    <HBox prefHeight="50.0" prefWidth="200.0">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Startzeit:">
+            <HBox.margin>
+                <Insets left="35.0" top="10.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Raleway Light" size="18.0"/>
+            </font>
+        </Text>
+        <TextField fx:id="addStartzeit" prefHeight="20.0" prefWidth="400.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <HBox.margin>
+                <Insets left="126.0" top="10.0"/>
+            </HBox.margin>
+        </TextField>
+    </HBox>
+    <HBox prefHeight="50.0" prefWidth="200.0">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Endezeit:">
+            <HBox.margin>
+                <Insets left="35.0" top="10.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Raleway Light" size="18.0"/>
+            </font>
+        </Text>
+        <TextField fx:id="addEndezeit" prefHeight="20.0" prefWidth="400.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <HBox.margin>
+                <Insets left="123.0" top="10.0"/>
+            </HBox.margin>
+        </TextField>
+    </HBox>
+    <HBox prefHeight="150.0" prefWidth="200.0"/>
+    <HBox prefHeight="100.0" prefWidth="200.0">
+        <Button mnemonicParsing="false" onMouseClicked="#save" prefHeight="30.0" prefWidth="100.0"
+                text="Hinzufügen">
+            <HBox.margin>
+                <Insets left="200.0" top="30.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Raleway Medium" size="13.0"/>
+            </font>
+        </Button>
+        <Button mnemonicParsing="false" onMouseClicked="#clean" prefHeight="30.0"
+                prefWidth="100.0" text="Löschen">
+            <HBox.margin>
+                <Insets left="60.0" top="30.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Raleway Medium" size="13.0"/>
+            </font>
+        </Button>
+    </HBox>
 </VBox>

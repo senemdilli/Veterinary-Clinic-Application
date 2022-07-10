@@ -38,7 +38,7 @@ public class TableControllerRezepte implements Initializable {
     @FXML
     private void getAddView() {
         try {
-            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/AddRezepteController.fxml")));
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/addRezepte.fxml")));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setScene(scene);

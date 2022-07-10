@@ -20,7 +20,6 @@ public class AddZahlungController implements Initializable {
     private ChoiceBox<String> addTier;
 
     private final String[] zahlungsarten = {"Bar", "Kreditkarte", "Anweisung"};
-    private boolean update;
     int zahlungid;
     int tierid;
 
@@ -66,9 +65,5 @@ public class AddZahlungController implements Initializable {
         addZahlungsart.setValue(null);
         addZahlungsbetrag.setText(null);
         addTier.setValue(null);
-    }
-
-    void setUpdate(boolean b) {
-        this.update = b;
     }
 }

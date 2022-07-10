@@ -3,15 +3,17 @@ package Classes;
 import tierklinik.FullDB;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Termin {
 
     private static Integer terminid;
     private String angabe;
-    private LocalDate date;
+    private Date date;
     private String startzeit;
     private String endezeit;
     private String tiername;
@@ -19,8 +21,7 @@ public class Termin {
     private String hbname;
     private String tierarztname;
     private String zustand = "nicht";
-    static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ENGLISH);
-    static DateTimeFormatter dateFormat2 = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     public Termin(String tiername, String tiernachname, String tierarztname) throws SQLException {
         terminid = FullDB.getTerminId();
@@ -44,12 +45,16 @@ public class Termin {
         this.tiernachname = tiernachname;
         this.hbname = hbname;
         this.tierarztname = tierarzt;
-        this.date = LocalDate.parse(date, dateFormat);
+        try {
+            this.date = dateFormat.parse(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.startzeit = startzeit;
         this.endezeit = startzeit;
     }
 
-    public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname, int terminid, String zustand, String date, String startzeit, String endezeit) throws SQLException {
+    public Termin(String angabe, String tiername, String tiernachname, String hbname, String tierarztname, int terminid, String zustand, String date, String startzeit, String endezeit){
         this.angabe = angabe;
         this.tiername = tiername;
         this.tiernachname = tiernachname;
@@ -57,7 +62,11 @@ public class Termin {
         this.tierarztname = tierarztname;
         this.terminid = terminid;
         this.zustand = zustand;
-        this.date = LocalDate.parse(date, dateFormat);
+        try {
+            this.date = dateFormat.parse(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.startzeit = startzeit;
         this.endezeit = startzeit;
     }
@@ -70,8 +79,8 @@ public class Termin {
         this.angabe = angabe;
     }
 
-    public void setDate(String date){
-        this.date = LocalDate.parse(date, dateFormat);
+    public void setDate(String date) throws ParseException {
+        this.date = dateFormat.parse(date);
     }
 
     public void setStartzeit(String gegebenstartzeit) {
@@ -111,8 +120,8 @@ public class Termin {
         return angabe;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public String getDate() {
+        return dateFormat.format(date);
     }
 
     public String getStartzeit() {
@@ -143,11 +152,12 @@ public class Termin {
         return tierarztname;
     }
 
-    public static boolean controlDate(int terminid) throws SQLException {
+    public static boolean controlDate(int terminid) throws SQLException, ParseException {
         if(terminid == -1) return false;
         Termin termin = FullDB.getTermin(terminid);
-        LocalDate termindate = termin.getDate();
-        LocalDate today = LocalDate.now();
-        return termindate.isAfter(today);
+        String termindate = termin.getDate();
+        Date termindateDate = dateFormat.parse(termindate);
+        Date today = new Date();
+        return termindateDate.after(today);
     }
 }
