@@ -10,6 +10,9 @@ public class Zahlung {
     private Double zahlungsbetrag;
     private String zustand;
     private static Integer tierid;
+    private String name;
+    private String nachname;
+    private String hbname;
     public Zahlung(String zahlungsart, double zahlungsbetrag, Integer tierid) throws SQLException {
         zahlungid = FullDB.getZahlungid();
         Zahlung.tierid = tierid;
@@ -17,12 +20,15 @@ public class Zahlung {
         this.zahlungsbetrag = zahlungsbetrag;
         zustand  = "nicht";
     }
-    public Zahlung(String zahlungsart, double zahlungsbetrag, Integer zahlungid, String zustand, Integer tierid, String tiername, String tiernachname, String hbname) throws SQLException {
+    public Zahlung(String zahlungsart, double zahlungsbetrag, Integer zahlungid, String zustand, Integer tierid, String name, String nachname, String hbname) throws SQLException {
         zahlungid = FullDB.getZahlungid();
         this.zahlungsart = zahlungsart;
         this.zahlungsbetrag = zahlungsbetrag;
         this.zustand = zustand;
         Zahlung.tierid = tierid;
+        this.name = name;
+        this.nachname = nachname;
+        this.hbname = hbname;
     }
 
     // Setter
@@ -63,5 +69,29 @@ public class Zahlung {
     }
     public static Integer getTierid() {
         return tierid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNachname() {
+        return nachname;
+    }
+
+    public void setNachname(String nachname) {
+        this.nachname = nachname;
+    }
+
+    public String getHbname() {
+        return hbname;
+    }
+
+    public void setHbname(String hbname) {
+        this.hbname = hbname;
     }
 }

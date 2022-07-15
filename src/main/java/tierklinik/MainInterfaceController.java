@@ -138,6 +138,7 @@ public class MainInterfaceController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        FullDB.setConnection();
         loadDate();
     }
 }

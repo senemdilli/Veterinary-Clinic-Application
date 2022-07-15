@@ -3,10 +3,9 @@ package tierklinik;
 import Classes.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.*;
 
-public class FullDB {
+public class FullDB{
     public  static Connection con = null;
     static String query = null;
     static String query2 = null;
@@ -34,7 +33,6 @@ public class FullDB {
     // Personal SQL Operationen
     // ADD Personal
     protected static void getPersonalQuery(Personal personal) {
-        setConnection();
         id = personal.getId();
         System.out.println(id);
         if (!update) {
@@ -90,7 +88,6 @@ public class FullDB {
     }
     // Personal Table
     protected static ObservableList<Personal> getPersonalDB() {
-        setConnection();
         ObservableList<Personal> oblist = FXCollections.observableArrayList();
         try {
             oblist.clear();
@@ -127,7 +124,6 @@ public class FullDB {
     // Tier SQL Operationen
     // ADD Tier
     protected static void getTierQuery(Tier tier) {
-        setConnection();
         id = tier.getTierid();
         if (!update) {
             query = "INSERT INTO person ('name', 'nachname', id , 'adresse', telefonnummer , 'email') VALUES(?,?,?,?,?,?)";
@@ -173,7 +169,6 @@ public class FullDB {
     }
     // Tier Table
     protected static ObservableList<Tier> getTierDB() {
-        setConnection();
         ObservableList<Tier> oblist = FXCollections.observableArrayList();
         try {
             oblist.clear();
@@ -260,7 +255,7 @@ public class FullDB {
 
     // Appointment Table
     public static int getTerminId() throws SQLException {
-        query = "SELECT * FROM termin";
+        query = "SELECT * FROM termin ORDER BY terminid";
         int terminid = 0;
         try {
             connection = FullDB.connect();
@@ -303,7 +298,6 @@ public class FullDB {
         }
     }
     protected static ObservableList<Termin> getTerminDB() {
-        setConnection();
         ObservableList<Termin> oblist = FXCollections.observableArrayList();
         try {
             oblist.clear();
@@ -386,9 +380,8 @@ public class FullDB {
 
     // Zahlung Table
     protected static Double getTotalAmount() {
-        setConnection();
         try {
-            query = "SELECT SUM(zahlungsbetrag) FROM zahlung";
+            query = "SELECT SUM(zahlungsbetrag) FROM zahlung WHERE zustand = 'nicht'";
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
             return resultSet.getDouble("SUM(zahlungsbetrag)");
@@ -408,7 +401,7 @@ public class FullDB {
         }
     }
     public static int getZahlungid() throws SQLException {
-        query = "SELECT * FROM zahlung";
+        query = "SELECT * FROM zahlung ORDER BY zahlungid";
         int zahlungid = 0;
         try {
             preparedStatement = connection.prepareStatement(query);
@@ -434,7 +427,6 @@ public class FullDB {
         }
     }
     protected static ObservableList<Zahlung> getZahlungDB() {
-        setConnection();
         ObservableList<Zahlung> oblist = FXCollections.observableArrayList();
         try {
             oblist.clear();
@@ -472,32 +464,30 @@ public class FullDB {
         return rezeptid+1;
     }
     protected static void getRezepteQuery(Rezepte rezept) {
-        id = rezept.getRezeptId();
+        id = rezept.getRezeptid();
 
         if (!update) {
-            query = "INSERT INTO rezepte ('rezeptid', 'tierid', 'tiername', 'nachname', 'medizin', 'date') VALUES(?,?,?,?,?,?)";
+            query = "INSERT INTO rezepte ('rezeptid', 'tierid', 'tiername', 'nachname', 'medizin') VALUES(?,?,?,?,?)";
         } else {
             query = "UPDATE 'rezepte' SET"
                     + "'tierid' =?,"
                     + "'tiername' =?,"
                     + "'nachname' =?,"
                     + "'medizin' =?,"
-                    + "'date' =?,"
                     + "'rezeptid' =? WHERE rezeptid ='" + id + "'";
         }
 
     }
     protected static void insertRezepte(Rezepte rezept){
-        id = rezept.getRezeptId();
+        id = rezept.getRezeptid();
 
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, String.valueOf(rezept.getRezeptId()));
-            preparedStatement.setString(2, String.valueOf(rezept.getTierId()));
-            preparedStatement.setString(3, rezept.getTierName());
-            preparedStatement.setString(4, rezept.getNachaname());
+            preparedStatement.setString(1, String.valueOf(rezept.getRezeptid()));
+            preparedStatement.setString(2, String.valueOf(rezept.getTierid()));
+            preparedStatement.setString(3, rezept.getTiername());
+            preparedStatement.setString(4, rezept.getNachname());
             preparedStatement.setString(5, rezept.getMedizin());
-            preparedStatement.setString(6, String.valueOf(rezept.getDate()));
             preparedStatement.execute();
 
         } catch (SQLException e) {
@@ -508,7 +498,6 @@ public class FullDB {
 
     // Rezepte Table
     protected static ObservableList<Rezepte> getRezepteDB() {
-        setConnection();
         ObservableList<Rezepte> oblist = FXCollections.observableArrayList();
         try {
             oblist.clear();
@@ -519,7 +508,7 @@ public class FullDB {
             while (resultSet.next()) {
                 Rezepte rezept = new Rezepte(resultSet.getInt("rezeptid"), resultSet.getInt("tierid"),
                         resultSet.getString("tiername"), resultSet.getString("nachname"),
-                        resultSet.getString("medizin"), resultSet.getDate("date"));
+                        resultSet.getString("medizin"));
                 oblist.add(rezept);
             }
         } catch (SQLException e) {
@@ -527,5 +516,4 @@ public class FullDB {
         }
         return oblist;
     }
-
 }

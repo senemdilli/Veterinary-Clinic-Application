@@ -3,28 +3,20 @@ package Classes;
 import tierklinik.FullDB;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Rezepte {
     private Integer rezeptId;
     private Integer tierId;
-    private String tierName;
-    private String nachaname;
+    private String tiername;
+    private String nachname;
     private String medizin;
-    private Date date;
-    static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-    public Rezepte(Integer rezeptId, Integer tierId, String tierName, String nachaname, String medizin, Date date) throws SQLException {
+    public Rezepte(Integer rezeptId, Integer tierId, String tierName, String nachaname, String medizin) throws SQLException {
         rezeptId = FullDB.getRezeptId();
         this.tierId = tierId;
-        this.tierName = tierName;
-        this.nachaname = nachaname;
+        this.tiername = tierName;
+        this.nachname = nachaname;
         this.medizin = medizin;
-        this.date = date;
     }
 
     public Rezepte(Integer tierId, String medizin) throws SQLException {
@@ -34,47 +26,37 @@ public class Rezepte {
     }
 
     //Setter
-    public void setRezeptId(Integer rezeptId) {
+    public void setRezeptid(Integer rezeptId) {
         this.rezeptId = rezeptId;
     }
     public void setTierId(Integer tierId) {
         this.tierId = tierId;
     }
-    public void setTierName(String tierName) {
-        this.tierName = tierName;
+    public void setTiername(String tierName) {
+        this.tiername = tierName;
     }
     public void setNachaname(String nachaname) {
-        this.nachaname = nachaname;
+        this.nachname = nachaname;
     }
     public void setMedizin(String medizin) {
         this.medizin = medizin;
     }
-    public void setDate(String date) {
-        try {
-            this.date = dateFormat.parse(date);
-        } catch (ParseException ex) {
-            Logger.getLogger(Termin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     //Getter
-    public Integer getRezeptId() {
+    public Integer getRezeptid() {
         return rezeptId;
     }
-    public Integer getTierId() {
+    public Integer getTierid() {
         return tierId;
     }
-    public String getTierName() {
-        return tierName;
+    public String getTiername() {
+        return tiername;
     }
-    public String getNachaname() {
-        return nachaname;
+    public String getNachname() {
+        return nachname;
     }
     public String getMedizin() {
         return medizin;
-    }
-    public Date getDate() {
-        return date;
     }
 
 }

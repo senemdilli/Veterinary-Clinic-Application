@@ -86,7 +86,6 @@ public class TableControllerPersonal implements Initializable {
         col_gehalt.setCellValueFactory(new PropertyValueFactory<>("gehalt"));
 
         table.setItems(oblist);
-
     }
 
     @Override

@@ -10,13 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -31,9 +31,16 @@ public class TableControllerRezepte implements Initializable {
     private TableColumn<Rezepte,String> col_nachname;
     @FXML
     private TableColumn<Rezepte,Integer> col_medizin;
+
+
     @FXML
-    private TableColumn<Rezepte, Date> col_date;
+    private TextField setTiername;
+    @FXML
+    private TextField setNachname;
+    @FXML
+    private TextField setMedizin;
     ObservableList<Rezepte> oblist = FXCollections.observableArrayList();
+    Rezepte rezept = null;
 
     @FXML
     private void getAddView() {
@@ -63,7 +70,6 @@ public class TableControllerRezepte implements Initializable {
         col_name.setCellValueFactory(new PropertyValueFactory<>("tiername"));
         col_nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
         col_medizin.setCellValueFactory(new PropertyValueFactory<>("medizin"));
-        col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         table.setItems(oblist);
 
@@ -71,5 +77,31 @@ public class TableControllerRezepte implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadDate();
+    }
+
+    @FXML
+    private void printRezepte() {
+        rezept = table.getSelectionModel().getSelectedItem();
+        try {
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/printedRezept.fxml")));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        loadRezept(rezept);
+    }
+
+    @FXML
+    private void loadRezept(Rezepte rezept) {
+
+        setMedizin.setText(rezept.getMedizin());
+        setTiername.setText(rezept.getTiername());
+        setNachname.setText(rezept.getNachname());
+
     }
 }

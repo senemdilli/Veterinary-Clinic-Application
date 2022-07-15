@@ -69,13 +69,6 @@ public class TableControllerKontenstelle {
     }
 
     @FXML
-    private void makePaid() {
-        zahlung = table.getSelectionModel().getSelectedItem();
-        FullDB.makePaid(zahlung);
-        refreshTable();
-    }
-
-    @FXML
     private void loadDate(){
         refreshTable();
 
@@ -89,8 +82,20 @@ public class TableControllerKontenstelle {
         table.setItems(oblist);
     }
 
+    @FXML
+    private void getTotalAmount() {
+        col_gesamtbetrag.setItems(FXCollections.observableArrayList(FullDB.getTotalAmount()));
+    }
+
+    @FXML
+    private void makePaid() {
+        zahlung = table.getSelectionModel().getSelectedItem();
+        FullDB.makePaid(zahlung);
+        refreshTable();
+    }
+
     public void initialize() throws SQLException {
         loadDate();
-        col_gesamtbetrag.setItems(FXCollections.observableArrayList(FullDB.getTotalAmount()));
+        getTotalAmount();
     }
 }
